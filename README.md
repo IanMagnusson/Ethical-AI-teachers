@@ -21,3 +21,6 @@ Running with the debug flag off will run all tasks.
 python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --greedy
 ```
 This will generate all the samples and evaluate them.
+
+## Where to Modify the Code
+To modify what information is included in the samples, you can probably modify [main.py](main.py#L34), and if you'd like to modify where data is saved, you can modify [codegen.py](codegen.py#L212); both links point to specific lines in the code.
