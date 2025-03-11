@@ -62,9 +62,15 @@ def main(args):
 
     df = pd.read_csv(args.input_filepath)
     teacher_system_prompt = "You are a Python tutor. A student has written the following code, but it is not working as expected. Provide feedback to help the student fix the code."
+    if args.no_question_prompt:
+        teacher_system_prompt += "\n\nPlease do not repeat the question prompt. Be concise and just give feedback on the student's answer."
+    if args.no_cheat_prompt:
+        teacher_system_prompt += "\n\nPlease do not provide the exact solution. Instead, provide feedback that will help the student learn."
     df_with_feedback = get_feedback_for_all_errors(df, client, args.model, teacher_system_prompt)
 
     output_filepath = args.input_filepath.replace('.csv', f'_with_feedback_{args.model}.csv')
+    if args.output_dir:
+        output_filepath = os.path.join(args.output_dir, os.path.basename(output_filepath))
     df_with_feedback.to_csv(output_filepath, index=False)
     print(f"Feedback saved to {output_filepath}")
 
@@ -72,5 +78,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a CSV file and get feedback for errors using OpenAI API.")
     parser.add_argument("--input_filepath", type=str, help="Path to the input CSV file")
     parser.add_argument("--model", type=str, default="gpt-3.5-turbo", help="OpenAI model to use")
+    parser.add_argument("--no_cheat_prompt", action="store_true", help="Do include the prompt not to cheat")
+    parser.add_argument("--no_question_prompt", action="store_true", help="ask the model not to repeat the question prompt")
+    parser.add_argument("--output_dir", type=str, help="Path to save the output CSV")
     args = parser.parse_args()
     main(args)
