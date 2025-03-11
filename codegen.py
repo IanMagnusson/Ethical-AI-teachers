@@ -47,7 +47,7 @@ def codegen(
                     p.console.print(f"Skipping {task_id} as it is not in {id_range}")
                     continue
 
-            if not first_task_printed:
+            if debug and not first_task_printed:
                 print(f"First task prompt:\n{task['prompt']}")
                 first_task_printed = True
 
@@ -73,10 +73,15 @@ def codegen(
             sidx = n_samples - n_more_samples
             while sidx < n_samples:
                 prompt = task["prompt"].strip() + "\n"
+                init_soln = task["init_soln"]
+                feedback = task["feedback"]
                 outputs = model.codegen(
                     prompt,
                     do_sample=not greedy,
                     num_samples=n_samples - sidx,
+                    init_soln=init_soln,
+                    feedback=feedback,
+                    debug=debug,
                 )
                 assert outputs, "No outputs from model!"
                 for impl in outputs:
@@ -145,6 +150,8 @@ def run_codegen(
     gptqmodel_backend: str = "auto",  # For GPTQModel
     gguf_file: Optional[str] = None,
     debug: bool = False,
+    use_mini: bool = False,
+    feedback_file: Optional[str] = None,
 ):
     assert dataset in ["humaneval", "mbpp", "evalperf"], f"Invalid dataset {dataset}"
     assert dataset_files is not None, "dataset_files must be provided if dataset is not provided"
@@ -159,15 +166,20 @@ def run_codegen(
     identifier = model.strip("./").replace("/", "--") + f"_{backend}_temp_{temperature}"
     if evalperf_type:
         identifier += f"-{evalperf_type}"
+    if feedback_file:
+        identifier += f"-feedback"
 
-    if debug:
-        target_path = os.path.join(root, dataset, "debug", identifier)
+    if use_mini:
+        target_path = os.path.join(root, f"{dataset}_mini", identifier)
     else:
         target_path = os.path.join(root, dataset, identifier)
     if jsonl_fmt:
         target_path += ".jsonl"
     else:
         os.makedirs(target_path, exist_ok=True)
+        
+    if debug:
+        print(f"Target path: {target_path}")
 
     dataset_dict = dataset_files
 
@@ -209,8 +221,8 @@ def run_codegen(
     # Make project dir
     os.makedirs(root, exist_ok=True)
     # Make dataset dir
-    if debug:
-        os.makedirs(os.path.join(root, dataset, "debug"), exist_ok=True)
+    if use_mini:
+        os.makedirs(os.path.join(root, f"{dataset}_mini"), exist_ok=True)
     else:
         os.makedirs(os.path.join(root, dataset), exist_ok=True)
 

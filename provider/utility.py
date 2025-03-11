@@ -28,6 +28,9 @@ def make_raw_chat_prompt(
     instruction_prefix: str,
     response_prefix: str,
     tokenizer,
+    init_soln: str = None,
+    feedback: str = None,
+    debug: bool = False,
 ) -> str:
     # directly return prompt if it does not have a tokenizer.chat_template
     if tokenizer.chat_template is None:
@@ -48,6 +51,24 @@ def make_raw_chat_prompt(
 {_MAGIC_SPLITTER_}
 ```
 """
+
+    if init_soln and feedback:
+        task_prompt_suffix = f"""\
+A previous, incorrect solution is:
+```python
+{init_soln}
+```
+
+The feedback for the incorrect solution is as follows:
+```
+{feedback}
+```
+"""
+        task_prompt += task_prompt_suffix
+
+    if debug:
+        print(f"Task prompt: {task_prompt}")
+
     task_prompt = tokenizer.apply_chat_template(
         [
             {"role": "user", "content": task_prompt},

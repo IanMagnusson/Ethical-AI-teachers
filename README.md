@@ -12,15 +12,18 @@ source .venv/bin/activate
 This installs uv and the dependencies into a virtual environment. Feel free to use conda.
 
 ## Running the Code
-Running with the debug flag on will only run the first 10 tasks.
+Running with the --use_mini flag on will only run the first 10 tasks.
 ```
-python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --greedy --debug
+python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --debug --use_mini
 ```
-Running with the debug flag off will run all tasks.
+Running with the --use_mini flag off will run all tasks.
 ```
-python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --greedy
+python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --debug
 ```
+Debug just adds some additional print statements.
 This will generate all the samples and evaluate them.
 
-## Where to Modify the Code
-To modify what information is included in the samples, you can probably modify [main.py](main.py#L34), and if you'd like to modify where data is saved, you can modify [codegen.py](codegen.py#L212); both links point to specific lines in the code.
+If you have a feedback file, you can run:
+```
+python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --debug --feedback_file feedback.csv
+```

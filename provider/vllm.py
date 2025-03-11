@@ -50,7 +50,7 @@ class VllmDecoder(DecoderBase):
         return self.force_base_prompt or self.tokenizer.chat_template is None
 
     def codegen(
-        self, prompt: str, do_sample: bool = True, num_samples: int = 200
+        self, prompt: str, do_sample: bool = True, num_samples: int = 200, init_soln: str = None, feedback: str = None, debug: bool = False
     ) -> List[str]:
         if do_sample:
             assert self.temperature > 0, "Temperature must be greater than 0!"
@@ -60,10 +60,10 @@ class VllmDecoder(DecoderBase):
             prompt
             if self.is_direct_completion()
             else make_raw_chat_prompt(
-                prompt, self.instruction_prefix, self.response_prefix, self.tokenizer
+                prompt, self.instruction_prefix, self.response_prefix, self.tokenizer, init_soln, feedback, debug=debug
             )
         )
-
+        
         vllm_outputs = self.llm.generate(
             [prompt] * batch_size,
             SamplingParams(
