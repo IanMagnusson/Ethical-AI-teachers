@@ -1,0 +1,2434 @@
+task_id,solution,base_status,plus_status,base_fail_tests,plus_fail_tests,gt_solution,question_prompt,entry_point
+Mbpp/7,"def find_char_long(text):
+    # Split the text into words
+    words = text.split()
+    # Filter words that are at least 4 characters long
+    long_words = [word for word in words if len(word) >= 4]
+    # Return the result as a set
+    return set(long_words)",pass,fail,[],[['This is a very long string with no words that are at least 4 characters long.']],"
+import re
+def find_char_long(text):
+  return (re.findall(r""\b\w{4,}\b"", text))
+","""""""
+Write a function to find all words which are at least 4 characters long in a string.
+assert set(find_char_long('Please move back to stream')) == set(['Please', 'move', 'back', 'stream'])
+""""""
+",find_char_long
+Mbpp/16,"def text_lowercase_underscore(text):
+    # Check if the string matches the pattern of lowercase letters joined by underscores
+    return text.islower() and ""_"" in text",pass,fail,[],[['_abc']],"
+import re
+def text_lowercase_underscore(text):
+        return bool(re.match('^[a-z]+(_[a-z]+)*$', text))
+","""""""
+Write a function to that returns true if the input string contains sequences of lowercase letters joined with an underscore and false otherwise.
+assert text_lowercase_underscore(""aab_cbbbc"")==(True)
+""""""
+",text_lowercase_underscore
+Mbpp/63,"def max_difference(test_list):
+    # Calculate the maximum difference between the second and first elements of each tuple
+    res = max(sub[1] - sub[0] for sub in test_list)
+    return res",fail,fail,"[[[[3, 5], [1, 7], [10, 3], [1, 2]]]]","[[[[1000000, 999999], [10000000, 9999999], [100000000, 99999999], [1000000000, 999999999]]]]","
+def max_difference(test_list):
+  return max(abs(a - b) for a, b in test_list)
+","""""""
+Write a function to find the maximum difference between available pairs in the given tuple list.
+assert max_difference([(3, 5), (1, 7), (10, 3), (1, 2)]) == 7
+""""""
+",max_difference
+Mbpp/20,"def is_woodall(n):
+    # Check if the number is of the form (2^k - 1) * 2^k for some integer k
+    k = 1
+    while True:
+        woodall_number = (2 ** k - 1) * 2 ** k
+        if woodall_number == n:
+            return True
+        if woodall_number > n:
+            return False
+        k += 1",fail,fail,[[383]],[[True]],"
+def is_woodall(x): 
+	if not isinstance(x, int):
+		return False
+	if x <= 0 or x % 2 == 0:
+		return False
+	if (x == 1): 
+		return True
+	x += 1 
+	i = 0
+	while (x % 2 == 0): 
+		x /= 2
+		i += 1
+		if (i == x): 
+			return True
+	return False
+","""""""
+Write a function to check if the given number is woodball or not.
+assert is_woodall(383) == True
+""""""
+",is_woodall
+Mbpp/3,"def is_not_prime(n):
+    # Return False if n is less than 2, as 0 and 1 are not prime numbers
+    if n < 2:
+        return False
+    # Check divisibility from 2 to the square root of n
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return True
+    return False",fail,fail,[[1]],[[True]],"
+import math
+def is_not_prime(n):
+    if n == 1:
+        return True
+    for i in range(2, int(math.sqrt(n))+1):
+        if n % i == 0:
+            return True
+    return False
+","""""""
+Write a python function to identify non-prime numbers.
+assert is_not_prime(2) == False
+""""""
+",is_not_prime
+Mbpp/9,"def find_Rotations(s):
+    # Check if the string is empty or has only one character
+    if len(s) <= 1:
+        return 0
+    # Concatenate the string with itself to handle rotation cases
+    temp = s + s
+    # Initialize rotation count
+    rotations = 1
+    # Iterate through the string to find the minimum rotations
+    for i in range(len(s)):
+        # Check if the current substring matches the original string
+        if temp[i : i + len(s)] == s:
+            return rotations
+        rotations += 1
+    return rotations",fail,fail,[['ab']],[['aaaaaaaaaaaaaaaab']],"
+def find_Rotations(s): 
+    n = len(s)
+    s += s
+    for i in range(1, n + 1):
+        if s[i: i + n] == s[0: n]:
+            return i
+    return n
+","""""""
+Write a python function to find the minimum number of rotations (greater than 0) required to get the same string.
+assert find_Rotations(""aaaa"") == 1
+""""""
+",find_Rotations
+Mbpp/69,"def is_sublist(list1, list2):
+    # Check if list2 is a sublist of list1
+    return any((list1[i:i+len(list2)] == list2 for i in range(len(list1))))",pass,fail,[],"[[[], []]]","
+def is_sublist(l, s):
+	if len(l) < len(s):
+		return False
+	return any(l[i:i+len(s)] == s for i in range(len(l)-len(s)+1))
+","""""""
+Write a function to check whether a list contains the given sublist or not.
+assert is_sublist([2,4,3,5,7],[3,7])==False
+""""""
+",is_sublist
+Mbpp/67,"def bell_number(n):
+    # Create a 2D array to store Bell numbers
+    bell = [[0 for i in range(n+1)] for j in range(n+1)]
+    
+    # Base case
+    bell[0][0] = 1
+    
+    # Fill the Bell triangle
+    for i in range(1, n+1):
+        # Explicitly set Bell(0, i) = 0
+        bell[0][i] = 0
+        for j in range(i+1):
+            if j == 0:
+                bell[i][j] = bell[i-1][j]
+            else:
+                bell[i][j] = bell[i-1][j-1] + bell[i][j-1]
+    
+    # Return the last element of the last row, which is Bell(n, 0)
+    return bell[n][0]",fail,fail,[[2]],[[100]],"
+def bell_number(n):   
+    bell = [[0 for i in range(n+1)] for j in range(n+1)] 
+    bell[0][0] = 1
+    for i in range(1, n+1): 
+        bell[i][0] = bell[i-1][i-1]  
+        for j in range(1, i+1): 
+            bell[i][j] = bell[i-1][j-1] + bell[i][j-1]   
+    return bell[n][0] 
+","""""""
+Write a function to find the number of ways to partition a set of Bell numbers.
+assert bell_number(2)==2
+""""""
+",bell_number
+Mbpp/99,"def decimal_to_binary(n):
+    # Convert the decimal number to binary using bin() and remove the '0b' prefix
+    binary_str = bin(n)[2:]
+    return binary_str",pass,fail,[],[[-5]],"
+def decimal_to_binary(n): 
+    return bin(n).replace(""0b"","""") 
+","""""""
+Write a function to convert the given decimal number to its binary equivalent, represented as a string with no leading zeros.
+assert decimal_to_binary(8) == '1000'
+""""""
+",decimal_to_binary
+Mbpp/92,"def is_undulating(n):
+    # Convert the number to a string to easily check the pattern
+    str_n = str(n)
+    # Check if the length of the number is less than 3 or if it has any two consecutive same digits
+    if len(str_n) < 3 or any(str_n[i] == str_n[i+1] for i in range(len(str_n)-1)):
+        return False
+    # Check if the number follows the undulating pattern
+    return all(str_n[i] != str_n[i+1] for i in range(len(str_n)-2)) and str_n[0] != str_n[1]",pass,fail,[],[[2121212121212123]],"
+def is_undulating(n): 
+	digits = [int(digit) for digit in str(n)]
+	if len(set(digits)) != 2:
+		return False
+	return all(a != b for a, b in zip(digits, digits[1:]))
+","""""""
+Write a function to check whether the given number is undulating or not.
+assert is_undulating(1212121) == True
+""""""
+",is_undulating
+Mbpp/113,"def check_integer(string):
+    # Check if the string represents an integer
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False",pass,fail,[],[['']],"
+def check_integer(text):
+ text = text.strip()
+ if len(text) < 1:
+    return None
+ else:
+    if text[0] in '+-':
+        text = text[1:]
+    return text.isdigit()
+","""""""
+Write a function to check if a string represents an integer or not.
+assert check_integer(""python"")==False
+""""""
+",check_integer
+Mbpp/74,"def is_samepatterns(patterns, sequence):
+    # Create a dictionary to map patterns to sequence elements
+    pattern_to_seq = {}
+    seq_to_pattern = {}
+    
+    for pattern, seq in zip(patterns, sequence):
+        if pattern in pattern_to_seq:
+            if pattern_to_seq[pattern] != seq:
+                return False
+        else:
+            pattern_to_seq[pattern] = seq
+            
+        if seq in seq_to_pattern:
+            if seq_to_pattern[seq] != pattern:
+                return False
+        else:
+            seq_to_pattern[seq] = pattern
+            
+    return True",fail,fail,"[[['red', 'green', 'greenn'], ['a', 'b']]]","[[[], ['a', 'b', 'c']]]","
+def is_samepatterns(colors, patterns):    
+    if len(colors) != len(patterns):
+        return False    
+    pattern_color_dict = {pattern: set() for pattern in patterns}
+    for color, pattern in zip(colors, patterns):
+        pattern_color_dict[pattern].add(color)
+    return all(len(pattern_color_dict[pattern]) == 1 for pattern in patterns)
+","""""""
+Write a function to check whether it follows the sequence given in the patterns array.
+assert is_samepatterns([""red"",""green"",""green""], [""a"", ""b"", ""b""])==True
+""""""
+",is_samepatterns
+Mbpp/138,"def is_Sum_Of_Powers_Of_Two(n):
+    # Check if the number is a power of 2 or a sum of powers of 2
+    while n > 0:
+        if n % 2 == 1 and n != 1:
+            return False
+        n = n // 2
+    return True",fail,fail,[[10]],[[-14]],"
+def is_Sum_Of_Powers_Of_Two(n): 
+    return n > 0 and n % 2 == 0
+","""""""
+Write a python function to check whether the given number can be represented as sum of non-zero powers of 2 or not.
+assert is_Sum_Of_Powers_Of_Two(10) == True
+""""""
+",is_Sum_Of_Powers_Of_Two
+Mbpp/223,"def is_majority(arr, n, x):
+    # Find the first occurrence of x in the array
+    first_occurrence = -1
+    for i in range(n):
+        if arr[i] == x:
+            first_occurrence = i
+            break
+    
+    # If x is not present in the array, return False
+    if first_occurrence == -1:
+        return False
+    
+    # Find the last occurrence of x in the array
+    last_occurrence = -1
+    for i in range(n-1, -1, -1):
+        if arr[i] == x:
+            last_occurrence = i
+            break
+    
+    # Check if the count of x is more than n/2
+    if (last_occurrence - first_occurrence + 1) > (n // 2):
+        return True
+    else:
+        return False",pass,fail,[],"[[[], 1, 0]]","
+from bisect import bisect_left, bisect_right
+def is_majority(arr, n, x):
+	if x not in arr:
+		return False
+	l = bisect_left(arr, x)
+	r = bisect_right(arr, x)
+	return r - l > n / 2
+","""""""
+Write a function that takes in a sorted array, its length (n), and an element and returns whether the element is the majority element in the given sorted array. (The majority element is the element that occurs more than n/2 times.)
+assert is_majority([1, 2, 3, 3, 3, 3, 10], 7, 3) == True
+""""""
+",is_majority
+Mbpp/160,"def find_solution(a, b, n):
+    # Implementation of the extended Euclidean algorithm to find the solution
+    def extended_gcd(x, y):
+        if y == 0:
+            return x, 1, 0
+        else:
+            gcd, x1, y1 = extended_gcd(y, x % y)
+            return gcd, y1, x1 - (x // y) * y1
+
+    gcd, x, y = extended_gcd(a, b)
+    if n % gcd != 0:
+        return None  # No solution exists if n is not divisible by gcd of a and b
+    else:
+        # Scale the solution to the original coefficients
+        x, y = x * (n // gcd), y * (n // gcd)
+        return (x, y)",fail,fail,"[[2, 3, 7]]","[[25, 10, 500]]","
+def find_solution(a, b, n):
+	i = 0
+	while i * a <= n:
+		if (n - (i * a)) % b == 0: 
+			return (i, (n - (i * a)) // b)
+		i = i + 1
+	return None
+","""""""
+Write a function that returns integers x and y that satisfy ax + by = n as a tuple, or return None if no solution exists.
+assert find_solution(2, 3, 7) == (2, 1)
+""""""
+",find_solution
+Mbpp/235,"def even_bit_set_number(n):
+    # XOR the number with a pattern that sets all even bits to 1
+    # The pattern 0xAAAAAAAA is used to set even bits to 1
+    return n ^ 0xAAAAAAAA",fail,fail,[[10]],[[999999999]],"
+def even_bit_set_number(n): 
+    mask = 2
+    while mask < n:
+        n |= mask
+        mask <<= 2
+    return n
+","""""""
+Write a python function to set all even bits of a given number.
+assert even_bit_set_number(10) == 10
+""""""
+",even_bit_set_number
+Mbpp/109,"def odd_Equivalents(binary_str, rotations):
+    # Convert the binary string to an integer
+    num = int(binary_str, 2)
+    # Calculate the number of 1s in the binary representation
+    ones_count = bin(num).count('1')
+    # If the number of 1s is odd, it will remain odd after any rotation
+    # If the number of 1s is even, it will become odd after a rotation if the number of rotations is odd
+    return ones_count if ones_count % 2 == 1 else (rotations % 2 != 0)
+
+# Test the function with the provided test case",fail,fail,[],[],"
+def odd_Equivalent(s,n): 
+    count=0
+    for i in range(0,n): 
+        if (s[i] == '1'): 
+            count = count + 1
+    return count 
+","""""""
+Write a python function to find the number of numbers with an odd value when rotating a binary string the given number of times.
+assert odd_Equivalent(""011001"",6) == 3
+""""""
+",odd_Equivalent
+Mbpp/124,"import cmath
+def angle_complex(real, imag):
+    # Calculate the angle of the complex number
+    angle = cmath.phase(complex(real, imag))
+    return angle",fail,fail,"[['0.0', '1j']]","[['0.0', '1j']]","
+import cmath
+def angle_complex(a,b):
+  angle=cmath.phase(a+b)
+  return angle
+","""""""
+Write a function to get the angle of a complex number.
+assert math.isclose(angle_complex(0,1j), 1.5707963267948966, rel_tol=0.001)
+""""""
+",angle_complex
+Mbpp/244,"import math
+def next_Perfect_Square(n):
+    # Calculate the square root of the given number and round it up to the nearest integer
+    root = math.ceil(math.sqrt(n))
+    # Return the square of the rounded root
+    return root * root",fail,fail,[[9]],[[-5]],"
+import math  
+def next_Perfect_Square(N): 
+    if N < 0:
+        return 0
+    nextN = math.floor(math.sqrt(N)) + 1
+    return nextN * nextN 
+","""""""
+Write a python function to find the next perfect square greater than a given number.
+assert next_Perfect_Square(35) == 36
+""""""
+",next_Perfect_Square
+Mbpp/239,"def get_total_number_of_sequences(m, n):
+    # Create a 2D array to store results of subproblems
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    # There is one sequence of length 0, which is the empty sequence
+    for i in range(m + 1):
+        dp[i][0] = 1
+    
+    # Fill the dp array
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            # Sum of all sequences that can be formed with the current element i
+            dp[i][j] = dp[i][j - 1]
+            if i >= 2:
+                dp[i][j] += dp[i // 2][j - 1]
+    
+    # The answer is the number of sequences of length n that can be formed with numbers up to m
+    return dp[m][n]",fail,fail,"[[10, 4]]","[[100, 10]]","
+def get_total_number_of_sequences(m, n):
+	T=[[0 for _ in range(n + 1)] for _ in range(m + 1)] 
+	for i in range(m + 1): 
+		for j in range(n + 1): 
+			if i==0 or j==0: 
+				T[i][j] = 0
+			elif i<j: 
+				T[i][j] = 0
+			elif j==1: 
+				T[i][j] = i 
+			else: 
+				T[i][j] = T[i-1][j] + T[i//2][j-1] 
+	return T[m][n]
+","""""""
+Write a function that takes in positive integers m and n and finds the number of possible sequences of length n, such that each element is a positive integer and is greater than or equal to twice the previous element but less than or equal to m.
+assert get_total_number_of_sequences(10, 4) == 4
+""""""
+",get_total_number_of_sequences
+Mbpp/103,"def eulerian_num(n, m):
+    # Base case
+    if m == 0:
+        return int(n == 1)
+    if m == n:
+        return 1
+    # Recursive case
+    return ((n - m) * eulerian_num(n - 1, m - 1) +
+            (m + 1) * eulerian_num(n - 1, m))",fail,fail,"[[3, 1]]","[[1, 1]]","
+def eulerian_num(n, m): 
+	if (m >= n or n == 0): 
+		return 0 
+	if (m == 0): 
+		return 1 
+	return (n - m) * eulerian_num(n - 1, m - 1) + (m + 1) * eulerian_num(n - 1, m)
+","""""""
+Write a function to find the Eulerian number a(n, m).
+assert eulerian_num(3, 1) == 4
+""""""
+",eulerian_num
+Mbpp/106,"def add_lists(list1, tuple1):
+    # Convert the tuple to a list, extend it with the second list, and then convert it back to a tuple
+    return tuple(list1) + tuple(tuple1)",fail,fail,"[[[5, 6, 7], [9, 10]]]","[[[1, [2, 3], {'a': 4}], [5, [6, 7], {'b': 8}]]]","
+def add_lists(test_list, test_tup):
+  return test_tup + tuple(test_list)
+","""""""
+Write a function to append the given list to the given tuples.
+assert add_lists([5, 6, 7], (9, 10)) == (9, 10, 5, 6, 7)
+""""""
+",add_lists
+Mbpp/237,"def check_occurences(lst):
+    # Initialize an empty dictionary to store the count of each tuple
+    count_dict = {}
+    
+    # Iterate over each tuple in the list
+    for item in lst:
+        # If the tuple is already in the dictionary, increment its count
+        if item in count_dict:
+            count_dict[item] += 1
+        # If the tuple is not in the dictionary, add it with a count of 1
+        else:
+            count_dict[item] = 1
+            
+    return count_dict",fail,fail,"[[[[3, 1], [1, 3], [2, 5], [5, 2], [6, 3]]]]","[[[[2, 2], [1, 3], [2, 2], [3, 1], [1, 3]]]]","
+from collections import Counter 
+def check_occurences(test_list):
+  return dict(Counter(tuple(sorted(t)) for t in test_list))
+","""""""
+Write a function that takes in a list of tuples and returns a dictionary mapping each unique tuple to the number of times it occurs in the list.
+assert check_occurences([(3, 1), (1, 3), (2, 5), (5, 2), (6, 3)] ) == {(1, 3): 2, (2, 5): 2, (3, 6): 1}
+""""""
+",check_occurences
+Mbpp/125,"def find_length(string):
+    # Initialize variables to keep track of the maximum difference and current balance
+    max_diff = 0
+    current_balance = 0
+    
+    # Iterate through the string to calculate the balance of 0s and 1s
+    for char in string:
+        if char == '0':
+            current_balance += 1
+        else:
+            current_balance -= 1
+        
+        # Update the maximum difference found so far
+        max_diff = max(max_diff, abs(current_balance))
+    
+    return max_diff",fail,fail,[['11000010001']],[['100000011100000000111111111000000011111101']],"
+def find_length(string): 
+	current_sum = 0
+	max_sum = 0
+	for c in string: 
+		current_sum += 1 if c == '0' else -1
+		if current_sum < 0: 
+			current_sum = 0
+		max_sum = max(current_sum, max_sum) 
+	return max_sum
+","""""""
+Write a function to find the maximum difference between the number of 0s and number of 1s in any sub-string of the given binary string.
+assert find_length(""11000010001"") == 6
+""""""
+",find_length
+Mbpp/247,"def lps(s):
+    # Helper function to find the longest palindromic subsequence
+    def find_lps(s, i, j, dp):
+        # If the substring is empty or a single character
+        if i > j:
+            return 0
+        if i == j:
+            return 1
+        # If the result is already computed
+        if dp[i][j] != -1:
+            return dp[i][j]
+        # If characters at the current substring are the same
+        if s[i] == s[j]:
+            dp[i][j] = 2 + find_lps(s, i + 1, j - 1, dp)
+        else:
+            # If they are not the same, take the maximum of two possibilities
+            dp[i][j] = max(find_lps(s, i + 1, j, dp), find_lps(s, i, j - 1, dp))
+        return dp[i][j]
+
+    # Initialize the dp table
+    dp = [[-1 for _ in range(len(s))] for _ in range(len(s))]
+    # Find the longest palindromic subsequence
+    return find_lps(s, 0, len(s) - 1, dp)",pass,fail,[],[['CCCCCCCCCCCCCCCCCCCAACCCCCCCCCCCCCACCCCCCCNDZWBHEJKTPQGAOSLYCRMYEXCCCCCAAAACCCCC']],"
+def lps(str1): 
+	n = len(str1)
+	dp = [[0] * n for _ in range(n)]
+	for i in range(n - 1, -1, -1):
+		dp[i][i] = 1
+		for j in range(i + 1, n):
+			if str1[i] == str1[j]:
+				dp[i][j] = dp[i + 1][j - 1] + 2
+			else:
+				dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+	return dp[0][n - 1]
+","""""""
+Write a function to find the length of the longest palindromic subsequence in the given string.
+assert lps(""TENS FOR TENS"") == 5
+""""""
+",lps
+Mbpp/137,"def zero_count(arr):
+    # Calculate the total number of elements in the array
+    total_elements = len(arr)
+    # Count the number of zero elements in the array
+    zero_elements = arr.count(0)
+    # Calculate the number of non-zero elements
+    non_zero_elements = total_elements - zero_elements
+    # Calculate the ratio of zero elements to non-zero elements
+    ratio = zero_elements / non_zero_elements if non_zero_elements != 0 else 0
+    return ratio",pass,fail,[],"[[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]","
+def zero_count(nums):
+    if all(x == 0 for x in nums):
+        return float('inf')
+    return sum(x == 0 for x in nums) / sum(x != 0 for x in nums)
+","""""""
+Write a function to find the ratio of zeroes to non-zeroes in an array of integers.
+assert math.isclose(zero_count([0, 1, 2, -1, -5, 6, 0, -3, -2, 3, 4, 6, 8]), 0.181818, rel_tol=0.001)
+""""""
+",zero_count
+Mbpp/251,"def insert_element(lst, element):
+    # Insert the element before each element in the list
+    result = [element] + lst + [element] + lst
+    return result",fail,fail,"[[['Red', 'Green', 'Black'], 'c']]","[[[], 'hello']]","
+def insert_element(list1, element):
+    list1 = [v for elt in list1 for v in (element, elt)]
+    return list1
+","""""""
+Write a function that takes in a list and an element and inserts the element before each element in the list, and returns the resulting list.
+assert insert_element(['Red', 'Green', 'Black'] ,'c')==['c', 'Red', 'c', 'Green', 'c', 'Black']
+""""""
+",insert_element
+Mbpp/233,"def lateralsuface_cylinder(radius, height):
+    # Calculate the lateral surface area of a cylinder
+    lateral_surface_area = 2 * 3.1415 * radius * height
+    return lateral_surface_area",fail,fail,"[[10, 5]]","[[0.5, 5]]","
+import math
+def lateralsuface_cylinder(r, h):
+  return 2 * math.pi * r * h
+","""""""
+Write a function to find the lateral surface area of a cylinder.
+assert math.isclose(lateralsuface_cylinder(10,5), 314.15000000000003, rel_tol=0.001)
+""""""
+",lateralsuface_cylinder
+Mbpp/71,"def comb_sort(arr):
+    gap = len(arr)
+    shrink = 1.3
+    sorted = False
+
+    while not sorted:
+        gap = int(float(gap) / shrink)
+        if gap > 1:
+            gap = 1
+        sorted = gap == 1
+
+        i = 0
+        while i + gap < len(arr):
+            if arr[i] > arr[i + gap]:
+                arr[i], arr[i + gap] = arr[i + gap], arr[i]
+                sorted = False
+            i += 1
+
+    return arr",fail,pass,"[[[5, 15, 37, 25, 79]]]",[],"
+def comb_sort(nums):
+    n = len(nums)
+    gap = n
+    shrink = 1.3
+    swapped = True
+    while gap > 1 or swapped:
+        gap = int(gap / shrink)
+        if gap < 1:
+            gap = 1
+        swapped = False
+        for i in range(n - gap):
+            if nums[i] > nums[i + gap]:
+                nums[i], nums[i + gap] = nums[i + gap], nums[i]
+                swapped = True
+    return nums
+","""""""
+Write a function to sort a list of elements.
+assert comb_sort([5, 15, 37, 25, 79]) == [5, 15, 25, 37, 79]
+""""""
+",comb_sort
+Mbpp/126,"def sum(a, b):
+    # Calculate the greatest common divisor (gcd) of a and b
+    gcd_value = gcd(a, b)
+    
+    # Initialize the sum of divisors
+    sum_divisors = 0
+    
+    # Iterate through all numbers from 1 to gcd_value
+    for i in range(1, gcd_value + 1):
+        # If i is a divisor of gcd_value, add it to the sum
+        if gcd_value % i == 0:
+            sum_divisors += i
+    
+    return sum_divisors
+def gcd(x, y):
+    while y:
+        x, y = y, x % y
+    return x",pass,fail,[],"[[987654321, 987654321]]","
+import math
+def sum(a,b): 
+    sum = 0
+    n = math.gcd(a, b)
+    N = int(math.sqrt(n)) + 1
+    for i in range (1, N): 
+        if (n % i == 0): 
+            sum += i
+            if (n / i != i): 
+                sum += (n / i)
+    return sum
+","""""""
+Write a python function to find the sum of common divisors of two given numbers.
+assert sum(10,15) == 6
+""""""
+",sum
+Mbpp/84,"def sequence(n):
+    # Base cases
+    if n == 1:
+        return 1
+    elif n == 2:
+        return 1
+
+    # Initialize the sequence array
+    seq = [0] * (n + 1)
+    seq[1] = 1
+    seq[2] = 1
+
+    # Fill the sequence array using the recurrence relation
+    for i in range(3, n + 1):
+        seq[i] = seq[seq[i - 1]] + seq[i - seq[i - 1]]
+
+    return seq[n]",pass,fail,[],[[1000000]],"
+def sequence(n): 
+	if n == 1 or n == 2: 
+		return 1
+	seq = [0] * (n + 1)
+	seq[1] = seq[2] = 1
+	for i in range(3, n + 1):
+		seq[i] = seq[seq[i - 1]] + seq[i - seq[i - 1]]
+	return seq[n]
+","""""""
+Write a function to find the nth number in the newman conway sequence.
+assert sequence(10) == 6
+""""""
+",sequence
+Mbpp/123,"def amicable_numbers_sum(n):
+    # Helper function to calculate the sum of proper divisors of a number
+    def sum_of_divisors(x):
+        return sum([i for i in range(1, x) if x % i == 0])
+    
+    # Initialize the sum of amicable numbers
+    sum_amicable = 0
+    
+    # Iterate through numbers from 2 to n
+    for num in range(2, n + 1):
+        # Calculate the sum of proper divisors
+        div_sum = sum_of_divisors(num)
+        
+        # Check if the numbers are amicable
+        if div_sum < num and sum_of_divisors(div_sum) == num:
+            sum_amicable += num
+    
+    return sum_amicable",fail,fail,[[999]],[[10000]],"
+def div_sum(num):
+    res = 1
+    i = 2
+    while i * i <= num:
+        if num % i == 0:
+            res += i
+            if i * i != num:
+                res += num / i
+        i += 1
+    return res
+def amicable_numbers_sum(limit):
+    amicables = set()
+    for num in range(2, limit + 1):
+        if num in amicables:
+            continue
+        sum_fact = div_sum(num)
+        sum_fact2 = div_sum(sum_fact)
+        if num == sum_fact2 and num != sum_fact:
+            amicables.add(num)
+            amicables.add(sum_fact2)
+    return sum(amicables)
+","""""""
+Write a function to sum all amicable numbers from 1 to a specified number.
+assert amicable_numbers_sum(999)==504
+""""""
+",amicable_numbers_sum
+Mbpp/259,"def maximize_elements(tup1, tup2):
+    # Combine the tuples and sort them based on the first element of each sub-tuple
+    combined = sorted(tup1 + tup2, key=lambda x: x[0])
+    # Iterate through the combined list and update the second element of each sub-tuple
+    for i in range(1, len(combined)):
+        if combined[i][0] == combined[i-1][0]:
+            combined[i] = (combined[i][0], max(combined[i][1], combined[i-1][1]))
+    return tuple(map(tuple, combined))",fail,fail,"[[[[1, 3], [4, 5], [2, 9], [1, 10]], [[6, 7], [3, 9], [1, 1], [7, 3]]]]","[[[[1, 2], [3, 4], [5, 6], [7, 8]], [[8, 7], [6, 5], [4, 3], [2, 1]]]]","
+def maximize_elements(test_tup1, test_tup2):
+  return tuple((max(a, c), max(b, d)) for (a, b), (c, d) in zip(test_tup1, test_tup2))
+","""""""
+Write a function to maximize the given two tuples.
+assert maximize_elements(((1, 3), (4, 5), (2, 9), (1, 10)), ((6, 7), (3, 9), (1, 1), (7, 3))) == ((6, 7), (4, 9), (2, 9), (7, 10))
+""""""
+",maximize_elements
+Mbpp/265,"def list_split(lst, n):
+    # Initialize an empty list to store the resulting lists
+    result = []
+    # Iterate over the list in steps of n
+    for i in range(0, len(lst), n):
+        # Append the sliced list to the result
+        result.append(lst[i:i + n])
+    return result",fail,fail,"[[['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'], 3]]","[[[], 1]]","
+def list_split(S, step):
+    return [S[i::step] for i in range(step)]
+","""""""
+Write a function that takes in a list and an integer n and splits a list for every nth element, returning a list of the resulting lists.
+assert list_split(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'],3)==[['a', 'd', 'g', 'j', 'm'], ['b', 'e', 'h', 'k', 'n'], ['c', 'f', 'i', 'l']]
+""""""
+",list_split
+Mbpp/278,"def count_first_elements(test_tup):
+    # Count the number of elements before the first tuple element
+    res = sum(1 for x in test_tup if isinstance(x, tuple))
+    return res",fail,fail,"[[[1, 5, 7, [4, 6], 10]]]","[[[1, 2, 3, [4, 5], 6, 7]]]","
+def count_first_elements(test_tup):
+  for count, ele in enumerate(test_tup):
+    if isinstance(ele, tuple):
+      break
+  return count
+","""""""
+Write a function to find the number of elements that occurs before the tuple element in the given tuple.
+assert count_first_elements((1, 5, 7, (4, 6), 10) ) == 3
+""""""
+",count_first_elements
+Mbpp/274,"def even_binomial_Coeff_Sum(n):
+    # Initialize the sum to 0
+    sum = 0
+    # Loop through all numbers from 0 to n
+    for i in range(0, n + 1):
+        # Check if the index is even
+        if i % 2 == 0:
+            # Add the binomial coefficient C(n, i) to the sum
+            sum += (1 << i)
+    return sum",fail,fail,[[4]],[[10]],"
+import math  
+def even_binomial_Coeff_Sum( n): 
+    return 1 << (n - 1)
+","""""""
+Write a python function that takes in a positive integer n and finds the sum of even index binomial coefficients.
+assert even_binomial_Coeff_Sum(4) == 8
+""""""
+",even_binomial_Coeff_Sum
+Mbpp/459,"def remove_uppercase(text):
+    # Initialize an empty string to store the result
+    result = """"
+    # Iterate through each character in the input string
+    for char in text:
+        # Check if the character is not uppercase
+        if not char.isupper():
+            # Append the character to the result if it's not uppercase
+            result += char
+    # Return the final result string
+    return result",pass,fail,[],[['ThiS%^%!s&a(mY)TesTStR%i*ng']],"
+def remove_uppercase(str1):
+  return ''.join(c for c in str1 if c.islower())
+","""""""
+Write a function to remove uppercase substrings from a given string.
+assert remove_uppercase('cAstyoUrFavoRitETVshoWs') == 'cstyoravoitshos'
+""""""
+",remove_uppercase
+Mbpp/267,"def square_Sum(n):
+    # Initialize sum to 0
+    sum_squares = 0
+    # Loop through the first n odd numbers
+    for i in range(n):
+        # Calculate the i-th odd number and add its square to the sum
+        odd_number = 2 * i + 1
+        sum_squares += odd_number ** 2
+    return sum_squares",pass,fail,[],[[1000000.0]],"
+def square_Sum(n):  
+    return n * (4 * n * n - 1) / 3
+","""""""
+Write a python function that takes in an integer n and returns the sum of the squares of the first n odd natural numbers.
+assert square_Sum(2) == 10
+""""""
+",square_Sum
+Mbpp/311,"def set_left_most_unset_bit(n):
+    # If n is 0, set the first bit to 1
+    if n == 0:
+        return 1
+    # XOR n with -n to flip all bits after the rightmost 0
+    n |= n >> 1
+    n |= n >> 2
+    n |= n >> 4
+    n |= n >> 8
+    n |= n >> 16
+    # Add 1 to set the leftmost unset bit
+    return n + 1",fail,fail,[[10]],[[125]],"
+def set_left_most_unset_bit(n): 
+    if not (n & (n + 1)): 
+        return n 
+    pos, temp, count = 0, n, 0 
+    while temp: 
+        if not (temp & 1): 
+            pos = count      
+        count += 1
+        temp >>= 1
+    return (n | (1 << (pos))) 
+","""""""
+Write a python function to set the left most unset bit.
+assert set_left_most_unset_bit(10) == 14
+""""""
+",set_left_most_unset_bit
+Mbpp/306,"def max_sum_increasing_subseq(arr, n, i, k):
+    # Initialize the result with the element at index k
+    result = arr[k]
+    # Initialize the maximum sum of increasing subsequence until index i
+    max_sum = 0
+    
+    # Iterate from i to k-1 to find the maximum sum of increasing subsequence
+    for j in range(i, k):
+        if arr[j] > arr[j - 1]:
+            max_sum += arr[j]
+        else:
+            max_sum = arr[j]
+        # Update the result with the maximum sum found
+        result = max(result, max_sum)
+    
+    return result",fail,fail,"[[[1, 101, 2, 3, 100, 4, 5], 7, 4, 6]]","[[[5, 2, 4, 1, 3, 6], 6, 1, 3]]","
+def max_sum_increasing_subseq(a, n, index, k):
+	dp = [[0 for _ in range(n)] for _ in range(n)]
+	for i in range(n):
+		if a[i] > a[0]:
+			dp[0][i] = a[i] + a[0]
+		else:
+			dp[0][i] = a[i]
+	for i in range(1, n):
+		for j in range(n):
+			if a[j] > a[i] and j > i:
+				if dp[i - 1][i] + a[j] > dp[i - 1][j]:
+					dp[i][j] = dp[i - 1][i] + a[j]
+				else:
+					dp[i][j] = dp[i - 1][j]
+			else:
+				dp[i][j] = dp[i - 1][j]
+	return dp[index][k]
+","""""""
+Write a function to find the maximum sum of increasing subsequence from prefix until ith index and also including a given kth element which is after i, i.e., k > i .
+assert max_sum_increasing_subseq([1, 101, 2, 3, 100, 4, 5 ], 7, 4, 6) == 11
+""""""
+",max_sum_increasing_subseq
+Mbpp/301,"def dict_depth(dct):
+    # If the dictionary is empty, return 1
+    if not dct:
+        return 1
+    # If the dictionary is not empty, return 1 plus the maximum depth of its values
+    return 1 + (max(map(dict_depth, dct.values())) if dct.values() else 0)",fail,fail,"[[{'a': 1, 'b': {'c': {'d': {}}}}]]","[[{'a': 1, 'b': {'c': {'d': {'e': {'f': {}}}}}}]]","
+def dict_depth_aux(d):
+    if isinstance(d, dict):
+        return 1 + (max(map(dict_depth_aux, d.values())) if d else 0)
+    return 0
+def dict_depth(d):
+    return dict_depth_aux(d)
+","""""""
+Write a function to find the depth of a dictionary.
+assert dict_depth({'a':1, 'b': {'c': {'d': {}}}})==4
+""""""
+",dict_depth
+Mbpp/285,"def text_match_two_three(text):
+    # Check if the text contains 'a' followed by two or three 'b's
+    return bool(re.search(r'ab{2,3}', text))",fail,fail,[['ac']],[['']],"
+import re
+def text_match_two_three(text):
+    patterns = 'ab{2,3}'
+    return re.search(patterns, text) is not None
+","""""""
+Write a function that checks whether a string contains the 'a' character followed by two or three 'b' characters.
+assert text_match_two_three(""ac"")==(False)
+""""""
+",text_match_two_three
+Mbpp/415,"def max_Product(arr):
+    # Initialize the maximum and second maximum values
+    max1 = max2 = float('-inf')
+    # Iterate through the array to find the two largest numbers
+    for x in arr:
+        if x > max1:
+            max2 = max1
+            max1 = x
+        elif x > max2:
+            max2 = x
+    # Return the pair with the highest product
+    return (max1, max2)",fail,fail,"[[[1, 2, 3, 4, 7, 0, 8, 4]]]","[[[-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]]","
+def max_Product(arr): 
+    pairs = [(a, b) for a in arr for b in arr if a != b]
+    return max(pairs, key=lambda x: x[0] * x[1])
+","""""""
+Write a python function to find a pair with highest product from a given array of integers.
+assert max_Product([1,2,3,4,7,0,8,4]) == (7,8)
+""""""
+",max_Product
+Mbpp/264,"def dog_age(dog_years):
+    # Dog years to human years conversion factors
+    first_year = 10.5  # The first year of a dog's life counts as 10.5 human years
+    subsequent_years = 4  # Each year after the first counts as 4 human years
+    
+    # If the dog is less than 1 year, return the dog's age in dog years
+    if dog_years < 1:
+        return dog_years
+    
+    # Calculate the human equivalent age for the dog
+    human_equivalent_age = first_year + (dog_years - 1) * subsequent_years
+    
+    return human_equivalent_age",fail,fail,[[12]],[[100]],"
+def dog_age(h_age):
+	if h_age <= 2:
+		d_age = h_age * 10.5
+	else:
+		d_age = 21 + (h_age - 2) * 4
+	return d_age
+","""""""
+Write a function to calculate a dog's age in dog's years.
+assert dog_age(12)==61
+""""""
+",dog_age
+Mbpp/305,"def start_withp(words):
+    # Extract words starting with 'p' or 'P' and split them into individual words
+    result = [word for phrase in words for word in phrase.split() if word.lower().startswith('p')]
+    # Return the first two words from the result
+    return tuple(result[:2])",pass,fail,[],[[[]]],"
+import re
+def start_withp(words):
+    for w in words:
+        m = re.match(""(P\w+)\W(P\w+)"", w)
+        if m:
+            return m.groups()
+","""""""
+Write a function to return two words from a list of words starting with letter 'p'.
+assert start_withp([""Python PHP"", ""Java JavaScript"", ""c c++""])==('Python', 'PHP')
+""""""
+",start_withp
+Mbpp/430,"def parabola_directrix(a, b, c):
+    # Calculate the directrix of the parabola using the formula:
+    # Directrix: y = k - (1/(4*a))
+    # For a parabola in the form y = ax^2 + bx + c, k is the y-coordinate of the vertex
+    # k = (4ac - b^2) / (4a)
+    k = (4 * a * c - b ** 2) / (4 * a)
+    directrix = k - (1 / (4 * a))
+    return directrix",fail,fail,"[[5, 3, 2]]","[[0, 0, 0]]","
+def parabola_directrix(a, b, c): 
+  return ((int)(c - ((b * b) + 1) * 4 * a ))
+","""""""
+Write a function to find the directrix of a parabola.
+assert parabola_directrix(5,3,2)==-198
+""""""
+",parabola_directrix
+Mbpp/445,"def index_multiplication(tuple1, tuple2):
+    # Use a list comprehension to iterate over pairs of elements from both tuples
+    # and multiply the elements at the same index.
+    result = tuple((a * b for a, b in zip(tuple1, tuple2)))
+    return result",fail,fail,"[[[[1, 3], [4, 5], [2, 9], [1, 10]], [[6, 7], [3, 9], [1, 1], [7, 3]]]]","[[[[1, 1], [2, 2], [3, 3], [4, 4]], [[5, 5], [6, 6], [7, 7], [8, 8]]]]","
+def index_multiplication(test_tup1, test_tup2):
+  return tuple(tuple(a * b for a, b in zip(tup1, tup2))
+   for tup1, tup2 in zip(test_tup1, test_tup2))
+","""""""
+Write a function to perform index wise multiplication of tuple elements in the given two tuples.
+assert index_multiplication(((1, 3), (4, 5), (2, 9), (1, 10)),((6, 7), (3, 9), (1, 1), (7, 3)) ) == ((6, 21), (12, 45), (2, 9), (7, 30))
+""""""
+",index_multiplication
+Mbpp/310,"def string_to_tuple(str1):
+    # Convert the string to a tuple of characters
+    return tuple(str1)",fail,fail,[['python 3.0']],[['hello   world']],"
+def string_to_tuple(str1):
+    result = tuple(x for x in str1 if not x.isspace()) 
+    return result
+","""""""
+Write a function to convert a given string to a tuple of characters.
+assert string_to_tuple(""python 3.0"")==('p', 'y', 't', 'h', 'o', 'n', '3', '.', '0')
+""""""
+",string_to_tuple
+Mbpp/260,"def newman_prime(n):
+    # Import necessary library
+    from sympy import isprime
+    
+    # Initialize variables
+    count = 0
+    num = 3
+    
+    # Loop until we find the nth Newman–Shanks–Williams prime
+    while True:
+        # Check if the number is a prime and of the form 8k ± 1
+        if isprime(num) and (num % 8 == 1 or num % 8 == 7):
+            count += 1
+            if count == n:
+                return num
+        num += 2",fail,fail,[[3]],[[100]],"
+def newman_prime(n): 
+	if n == 0 or n == 1: 
+		return 1
+	a = 1
+	b = 1
+	c = 1
+	for _ in range(2, n + 1):
+		c = 2 * b + a
+		a = b
+		b = c
+	return c
+","""""""
+Write a function to find the nth newman–shanks–williams prime number.
+assert newman_prime(3) == 7
+""""""
+",newman_prime
+Mbpp/294,"def max_val(heterogeneous_list):
+    # Initialize the maximum value with the first element of the list
+    max_value = heterogeneous_list[0]
+    
+    # Iterate through each element in the list
+    for element in heterogeneous_list:
+        # Compare and update max_value if the current element is greater
+        if element > max_value:
+            max_value = element
+            
+    return max_value",fail,fail,"[[['Python', 3, 2, 4, 5, 'version']]]","[[[1, '2', True, 3.14, ['a', 'b'], [5, 6, 7], {'8': 'eight', '9': 'nine'}, 'Python', 10, 11, 12]]]","
+def max_val(listval):
+     max_val = max(i for i in listval if isinstance(i, int)) 
+     return max_val
+","""""""
+Write a function to find the maximum value in a given heterogeneous list.
+assert max_val(['Python', 3, 2, 4, 5, 'version'])==5
+""""""
+",max_val
+Mbpp/453,"def sumofFactors(n):
+    # Initialize result
+    result = 1
+    # Check for each number from 2 to square root of n
+    for i in range(2, int(n**0.5) + 1):
+        count = 0
+        curr_sum = 1
+        current_term = 1
+        # While i divides n, count factors and divide n
+        while (n % i == 0):
+            count += 1
+            n //= i
+            # Update current sum
+            current_term *= i
+            curr_sum += current_term
+        # If more than one factor is found, multiply result with curr_sum
+        if (count > 0):
+            result *= curr_sum
+    # If n becomes a prime number greater than 2
+    if (n >= 2):
+        result *= (1 + n)
+    return result",fail,fail,[[18]],[[101]],"
+import math 
+def sumofFactors(n) : 
+    if (n % 2 != 0) : 
+        return 0
+    return sum([i for i in range(2, n + 1) if n % i == 0 and i % 2 == 0])
+","""""""
+Write a python function to find the sum of even factors of a number.
+assert sumofFactors(18) == 26
+""""""
+",sumofFactors
+Mbpp/424,"def extract_rear(test_tup):
+    # Extract the last character of each string in the tuple
+    res = tuple(ele[-1] for ele in test_tup)
+    return res",fail,fail,"[[['Mers', 'for', 'Vers']]]","[[['Lorem', 'ipsum', 'dolor', 'sit', 'amet']]]","
+def extract_rear(test_tuple):
+  return [ele[-1] for ele in test_tuple]
+","""""""
+Write a function to extract only the rear index element of each string in the given tuple.
+assert extract_rear(('Mers', 'for', 'Vers') ) == ['s', 'r', 's']
+""""""
+",extract_rear
+Mbpp/427,"def change_date_format(date):
+    # Split the input date by '-'
+    parts = date.split('-')
+    # Rearrange the parts to the new format
+    new_date = f""{parts[2]}-{parts[1]}-{parts[0]}""
+    return new_date",pass,fail,[],[['2021-1-026']],"
+import re
+def change_date_format(dt):
+    return re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', dt)
+","""""""
+Write a function to convert a date of yyyy-mm-dd format to dd-mm-yyyy format.
+assert change_date_format(""2026-01-02"") == '02-01-2026'
+""""""
+",change_date_format
+Mbpp/300,"def count_binary_seq(n):
+    # Calculate the binomial coefficient (2n choose n)
+    return (1 / (n + 1)) * (2 ** (2 * n))",fail,fail,[[2]],[[4]],"
+def count_binary_seq(n): 
+	nCr = 1
+	res = 1
+	for r in range(1, n + 1): 
+		nCr = (nCr * (n + 1 - r)) / r 
+		res += nCr * nCr 
+	return res 
+","""""""
+Write a function to find the count of all binary sequences of length 2n such that sum of first n bits is same as sum of last n bits.
+assert math.isclose(count_binary_seq(1), 2.0, rel_tol=0.001)
+""""""
+",count_binary_seq
+Mbpp/440,"def find_adverb_position(sentence):
+    # Define the list of adverbs to search for
+    adverbs = ['always', 'often', 'sometimes', 'occasionally', 'seldom', 'never', 'hardly', 'barely', 'clearly', 'quickly', 'slowly', 'quietly', 'loudly', 'happily', 'sadly']
+    # Initialize the position to -1, assuming adverb not found
+    position = -1
+    # Initialize the starting index of the adverb
+    start = 0
+    # Iterate through each adverb in the list
+    for adverb in adverbs:
+        # Find the position of the current adverb in the sentence
+        pos = sentence.find(adverb, start)
+        # If the adverb is found, update the position and starting index
+        if pos != -1:
+            position = pos
+            start = pos + len(adverb)
+            # Break the loop as we found the first adverb
+            break
+    # Return the position of the adverb and the adverb itself
+    return (position, position + len(adverb), sentence[position:position + len(adverb)])",fail,fail,[['seriously!! there are many roses']],[['heavily and quickly we ran down the steep hill']],"
+import re
+def find_adverb_position(text):
+    for m in re.finditer(r""\w+ly"", text):
+        return (m.start(), m.end(), m.group(0))
+","""""""
+Write a function to find the first adverb and their positions in a given sentence.
+assert find_adverb_position(""clearly!! we can see the sky"")==(0, 7, 'clearly')
+""""""
+",find_adverb_position
+Mbpp/398,"def sum_of_digits(nums):
+    # Initialize the total sum to 0
+    total_sum = 0
+    # Iterate through each number in the list
+    for num in nums:
+        # Convert the number to a string, iterate over each character, convert it back to an integer, and sum them up
+        total_sum += sum(int(digit) for digit in str(num))
+    return total_sum",fail,fail,"[[[[10, 20, 4, 5, 'b', 70, 'a']]]]","[[[-10, 15, 0, -5, 2]]]","
+def sum_of_digits(nums):
+    return sum(int(el) for n in nums for el in str(n) if el.isdigit())
+","""""""
+Write a function to compute the sum of digits of each number of a given list.
+assert sum_of_digits([10,2,56])==14
+""""""
+",sum_of_digits
+Mbpp/564,"def count_Pairs(arr, n):
+    # Calculate the number of possible pairs
+    total_pairs = n * (n - 1) // 2
+    # Calculate the number of pairs with equal elements
+    equal_pairs = n - len(set(arr))
+    # Subtract the equal pairs from total pairs to get unequal pairs
+    unequal_pairs = total_pairs - equal_pairs
+    return unequal_pairs",fail,fail,"[[[1, 1, 1, 1], 4]]","[[[1, 2, 1, 2, 1, 2], 6]]","
+def count_Pairs(arr,n): 
+    cnt = 0; 
+    for i in range(n): 
+        for j in range(i + 1,n): 
+            if (arr[i] != arr[j]): 
+                cnt += 1; 
+    return cnt; 
+","""""""
+Write a python function which takes a list of integers and counts the number of possible unordered pairs where both elements are unequal.
+assert count_Pairs([1,2,1],3) == 2
+""""""
+",count_Pairs
+Mbpp/410,"def min_val(heterogeneous_list):
+    # Initialize the minimum value with the first element of the list
+    min_val = heterogeneous_list[0]
+    
+    # Iterate through each element in the list
+    for element in heterogeneous_list:
+        # Compare each element with the current minimum value
+        if element < min_val:
+            # Update the minimum value if a smaller element is found
+            min_val = element
+            
+    return min_val",fail,fail,"[[['Python', 3, 2, 4, 5, 'version']]]","[[['Python', 10, 5, 2.5, 2.5, 'version']]]","
+def min_val(listval):
+     min_val = min(i for i in listval if isinstance(i, int))
+     return min_val
+","""""""
+Write a function to find the minimum value in a given heterogeneous list.
+assert min_val(['Python', 3, 2, 4, 5, 'version'])==2
+""""""
+",min_val
+Mbpp/558,"def digit_distance_nums(x, y):
+    # Convert the integers to strings to iterate over each digit
+    x_str = str(x)
+    y_str = str(y)
+    
+    # Determine the length of the longer string
+    max_length = max(len(x_str), len(y_str))
+    
+    # Initialize the sum of differences
+    sum_diff = 0
+    
+    # Iterate over each digit up to the length of the longer string
+    for i in range(max_length):
+        # Get the current digit from each number, defaulting to 0 if out of range
+        digit_x = int(x_str[i]) if i < len(x_str) else 0
+        digit_y = int(y_str[i]) if i < len(y_str) else 0
+        
+        # Calculate the absolute difference and add to the sum
+        sum_diff += abs(digit_x - digit_y)
+    
+    return sum_diff",pass,fail,[],"[[12345, 9]]","
+def digit_distance_nums(n1, n2):
+    return sum([abs(int(c1) - int(c2)) for c1, c2 in zip(str(n1), str(n2))])
+","""""""
+Write a python function to find the sum of the per-digit difference between two integers.
+assert digit_distance_nums(1,2) == 1
+""""""
+",digit_distance_nums
+Mbpp/462,"from typing import List
+def combinations_list(arr: List[str]) -> List[List[str]]:
+    # Base case: if the list is empty, return a list with an empty list
+    if not arr:
+        return [[]]
+    
+    # Recursive case: get all combinations without the first element
+    partial_combinations = combinations_list(arr[1:])
+    
+    # For each combination, add the first element to create new combinations
+    with_first = [[arr[0]] + combination for combination in partial_combinations]
+    
+    # Combine the combinations with and without the first element
+    return partial_combinations + with_first",fail,fail,"[[['orange', 'red', 'green', 'blue']]]","[[['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']]]","
+def combinations_list(list1):
+    if len(list1) == 0:
+        return [[]]
+    result = []
+    for el in combinations_list(list1[1:]):
+        result += [el, el+[list1[0]]]
+    return result
+","""""""
+Write a function to find all possible combinations of the elements of a given list.
+assert combinations_list(['orange', 'red', 'green', 'blue'])==[[], ['orange'], ['red'], ['red', 'orange'], ['green'], ['green', 'orange'], ['green', 'red'], ['green', 'red', 'orange'], ['blue'], ['blue', 'orange'], ['blue', 'red'], ['blue', 'red', 'orange'], ['blue', 'green'], ['blue', 'green', 'orange'], ['blue', 'green', 'red'], ['blue', 'green', 'red', 'orange']]
+""""""
+",combinations_list
+Mbpp/563,"def extract_values(string):
+    # Initialize an empty list to store the extracted values
+    result = []
+    # Split the string by commas to separate the values
+    for value in string.split("", ""):
+        # Strip any leading or trailing whitespace and quotation marks from each value
+        value = value.strip().strip('""')
+        # Append the cleaned value to the result list
+        result.append(value)
+    return result",fail,fail,"[['""python"",""program"",""language""']]",[['This is a test input.']],"
+import re
+def extract_values(text):
+ return (re.findall(r'""(.*?)""', text))
+","""""""
+Write a function to extract values between quotation marks from a string.
+assert extract_values('""Python"", ""PHP"", ""Java""')==['Python', 'PHP', 'Java']
+""""""
+",extract_values
+Mbpp/468,"def max_product(arr):
+    # Initialize variables to store the maximum and second maximum products
+    max_product = 1
+    second_max_product = 1
+    
+    for num in arr:
+        if num > max_product:
+            # Update max_product and second_max_product
+            second_max_product = max_product
+            max_product = num
+        elif num > second_max_product:
+            # Update second_max_product if num is between max_product and second_max_product
+            second_max_product = num
+    
+    # Return the maximum product of the two largest numbers
+    return max_product * second_max_product",fail,fail,"[[[3, 100, 4, 5, 150, 6]]]","[[[-3, -100, -4, -5, -150, -6]]]","
+def max_product(arr):   
+  # record the correspond ending element to maintain the increasing subsequence
+  ret = max_ending = min_ending = (arr[0], arr[0])
+  for n in arr[1:]:
+    if n > max_ending[1]:
+      max_ending = max((max_ending[0] * n, n), max_ending, key=lambda x: x[0])
+    else:
+      max_ending = (n, n)
+    if n > min_ending[1]:
+      min_ending = min((min_ending[0] * n, n), min_ending, key=lambda x: x[0])
+    else:
+      min_ending = (n, n)
+    ret = max(ret, max_ending, min_ending, key=lambda x: x[0])
+  return ret[0]
+","""""""
+Write a function to find the maximum product formed by multiplying numbers of an increasing subsequence of that array.
+assert max_product([3, 100, 4, 5, 150, 6]) == 3000
+""""""
+",max_product
+Mbpp/421,"def concatenate_tuple(test_tuple):
+    # Join the elements of the tuple using the hyphen as a separator
+    res = '-'.join([ele for ele in test_tuple])
+    return res",fail,fail,"[[['ID', 'is', 4, 'UTS']]]",[[[42]]],"
+def concatenate_tuple(test_tup):
+    delim = ""-""
+    res = ''.join([str(ele) + delim for ele in test_tup])
+    res = res[ : len(res) - len(delim)]
+    return (str(res)) 
+","""""""
+Write a function to concatenate each element of tuple by the delimiter.
+assert concatenate_tuple((""ID"", ""is"", 4, ""UTS"") ) == 'ID-is-4-UTS'
+""""""
+",concatenate_tuple
+Mbpp/448,"def cal_sum(n):
+    # Base cases for the first three perrin numbers
+    if n == 0:
+        return 3
+    elif n == 1:
+        return 3
+    elif n == 2:
+        return 0
+    
+    # Initialize the first three perrin numbers
+    p0, p1, p2 = 3, 3, 0
+    sum_perrin = p0 + p1 + p2
+    
+    # Calculate the sum of perrin numbers up to n
+    for i in range(3, n + 1):
+        p_next = p0 + p1
+        sum_perrin += p_next
+        p0, p1, p2 = p1, p2, p_next
+    
+    return sum_perrin",fail,fail,[[9]],[[-5]],"
+def cal_sum(n): 
+	a = 3
+	b = 0
+	c = 2
+	if (n == 0): 
+		return 3
+	if (n == 1): 
+		return 3
+	if (n == 2): 
+		return 5
+	sum = 5
+	while (n > 2): 
+		d = a + b 
+		sum = sum + d 
+		a = b 
+		b = c 
+		c = d 
+		n = n - 1
+	return sum
+","""""""
+Write a function to calculate the sum of perrin numbers.
+assert cal_sum(9) == 49
+""""""
+",cal_sum
+Mbpp/451,"def remove_whitespaces(str1):
+    # Remove all whitespaces from the string
+    return ''.join(str1.split())",pass,fail,[],[['\n\t']],"
+import re
+def remove_whitespaces(text1):
+  return text1.replace(' ', '')
+","""""""
+Write a function to remove all whitespaces from the given string.
+assert remove_whitespaces(' Google    Flutter ') == 'GoogleFlutter'
+""""""
+",remove_whitespaces
+Mbpp/572,"def two_unique_nums(nums):
+    # Convert the list to a set to remove duplicates, then back to a list
+    unique_nums = list(set(nums))
+    # Return the list of unique numbers
+    return unique_nums",fail,fail,"[[[1, 2, 3, 2, 3, 4, 5]]]","[[[1, 2, 3, 2, 4, 5, 3, 6, 4, 7, 8, 9, 5, 6]]]","
+def two_unique_nums(nums):
+  return [n for n in nums if nums.count(n)==1]
+","""""""
+Write a python function to remove duplicate numbers from a given number of lists.
+assert two_unique_nums([1,2,3,2,3,4,5]) == [1, 4, 5]
+""""""
+",two_unique_nums
+Mbpp/580,"def extract_even(data):
+    # Iterate through each element in the tuple
+    for i in range(len(data)):
+        # If the element is a tuple, recursively call the function
+        if isinstance(data[i], tuple):
+            data[i] = extract_even(data[i])
+        # If the element is odd, replace it with None
+        elif data[i] % 2 != 0:
+            data[i] = None
+    # Return a tuple with non-None values
+    return tuple(x for x in data if x is not None)",fail,fail,"[[[4, 5, [7, 6, [2, 4]], 6, 8]]]","[[[1, 2, 3, [4, 5, [6, 7, [8, 9, [10, 11, [12, 13, [14, 15, [16, 17, [18, 19, [20]]]]]]]]]]]]","
+def even_ele(test_tuple, ): 
+	res = tuple() 
+	for ele in test_tuple: 
+		if isinstance(ele, tuple): 
+			res += (even_ele(ele), ) 
+		elif ele % 2 == 0: 
+			res += (ele, ) 
+	return res 
+def extract_even(test_tuple):
+	return even_ele(test_tuple)
+","""""""
+Write a function to remove uneven elements in the nested mixed tuple.
+assert extract_even((4, 5, (7, 6, (2, 4)), 6, 8)) == (4, (6, (2, 4)), 6, 8)
+""""""
+",extract_even
+Mbpp/576,"def is_Sub_Array(list1, list2):
+    # Check if list2 is a subarray of list1
+    return any((list1[i:j] == list2 for i in range(len(list1)) for j in range(i + 1, len(list1) + 1)))",pass,fail,[],"[[[], []]]","
+def is_Sub_Array(A,B): 
+    a = 0
+    b = 0
+    while a < len(A) and b < len(B):
+        if A[a] == B[b]:
+            a += 1
+            b += 1
+        else:
+            a += 1
+    return b == len(B)
+","""""""
+Write a python function to check whether a list is sublist of another or not.
+assert is_Sub_Array([1,4,3,5],[1,2]) == False
+""""""
+",is_Sub_Array
+Mbpp/577,"def last_Digit_Factorial(n):
+    # If n is 0 or 1, the factorial is 1, so the last digit is 1
+    if n == 0 or n == 1:
+        return 1
+    # For n >= 5, the factorial will always end in 0 because it will contain at least one 2 and one 5
+    if n >= 5:
+        return 0
+    # For n < 5, calculate the factorial and return the last digit
+    factorial = 1
+    for i in range(2, n + 1):
+        factorial *= i
+    return factorial % 10",pass,fail,[],[[2.5]],"
+def last_Digit_Factorial(n): 
+    if (n == 0): 
+      return 1
+    elif (n <= 2): 
+      return n  
+    elif (n == 3): 
+      return 6
+    elif (n == 4): 
+      return 4 
+    else: 
+      return 0
+","""""""
+Write a python function to find the last digit in factorial of a given number.
+assert last_Digit_Factorial(4) == 4
+""""""
+",last_Digit_Factorial
+Mbpp/593,"def removezero_ip(ip):
+    # Split the IP address into its components
+    ip_parts = ip.split('.')
+    
+    # Remove leading zeros from each part and join them back with '.'
+    cleaned_parts = [''.join(c for c in part if c != '0') if part != '0' else '0' for part in ip_parts]
+    
+    # Reconstruct the IP address
+    return '.'.join(cleaned_parts)",pass,fail,[],[['0.0.0.0']],"
+import re
+def removezero_ip(ip):
+ return re.sub('\.[0]*', '.', ip)
+","""""""
+Write a function to remove leading zeroes from an ip address.
+assert removezero_ip(""216.08.094.196"")==('216.8.94.196')
+""""""
+",removezero_ip
+Mbpp/603,"def get_ludic(n):
+    # Initialize the list of numbers from 1 to n
+    ludics = list(range(1, n + 1))
+    index = 1
+
+    # Iterate over the list to remove every nth element
+    while index < len(ludics):
+        # Remove every ludic number at the current index
+        ludic_number = ludics[index]
+        ludics = [ludic_number for i, ludic_number in enumerate(ludics) if i % ludic_number != ludic_number - 1]
+        index += 1
+
+    return ludics",fail,fail,[[10]],[[100]],"
+def get_ludic(n):
+	ludics = []
+	for i in range(1, n + 1):
+		ludics.append(i)
+	index = 1
+	while(index != len(ludics)):
+		first_ludic = ludics[index]
+		remove_index = index + first_ludic
+		while(remove_index < len(ludics)):
+			ludics.remove(ludics[remove_index])
+			remove_index = remove_index + first_ludic - 1
+		index += 1
+	return ludics
+","""""""
+Write a function to get all lucid numbers smaller than or equal to a given integer.
+assert get_ludic(10) == [1, 2, 3, 5, 7]
+""""""
+",get_ludic
+Mbpp/615,"def average_tuple(test_tup):
+    # Calculate the average for each tuple and return as a list
+    res = [sum(sub_tup) / len(sub_tup) for sub_tup in test_tup]
+    return res",fail,fail,"[[[[10, 10, 10, 12], [30, 45, 56, 45], [81, 80, 39, 32], [1, 2, 3, 4]]]]","[[[[7, 8, 9], [-2, -4, -6], [0, 20, 30]]]]","
+def average_tuple(nums):
+    result = [sum(x) / len(x) for x in zip(*nums)]
+    return result
+","""""""
+Write a function which takes a tuple of tuples and returns the average value for each tuple as a list.
+assert average_tuple(((10, 10, 10, 12), (30, 45, 56, 45), (81, 80, 39, 32), (1, 2, 3, 4)))==[30.5, 34.25, 27.0, 23.25]
+""""""
+",average_tuple
+Mbpp/610,"def remove_kth_element(arr, k):
+    # Return the list excluding the k'th element
+    return [arr[i] for i in range(len(arr)) if i != k]",fail,fail,"[[[1, 1, 2, 3, 4, 4, 5, 1], 3]]","[[[1, 2, 3, 4, 5], 1]]","
+def remove_kth_element(list1, k):
+    return list1[:k-1] + list1[k:]
+","""""""
+Write a python function which takes a list and returns a list with the same elements, but the k'th element removed.
+assert remove_kth_element([1,1,2,3,4,4,5,1],3)==[1, 1, 3, 4, 4, 5, 1]
+""""""
+",remove_kth_element
+Mbpp/590,"import cmath
+def polar_rect(r, theta):
+    # Convert polar coordinates to rectangular coordinates
+    x = r * cmath.cos(theta)
+    y = r * cmath.sin(theta)
+    return (x.real, y.real), (x + y*1j)",fail,fail,"[[3, 4]]","[[0, 0]]","
+import cmath
+def polar_rect(x,y):
+    cn = cmath.polar(complex(x, y))
+    cn1 = cmath.rect(2, cmath.pi)
+    return (cn, cn1)
+","""""""
+Write a function to convert polar coordinates to rectangular coordinates.
+assert polar_rect(3,4)==((5.0, 0.9272952180016122), (-2+2.4492935982947064e-16j))
+""""""
+",polar_rect
+Mbpp/583,"def catalan_number(n):
+    # Initialize the result variable
+    result = 1
+    # Compute the nth Catalan number using the formula
+    for i in range(n, 0, -1):
+        result = result * (2 * (2 * i - 1)) // i
+    return result",fail,fail,[[10]],[[1]],"
+def catalan_number(num):
+    if num <= 1:
+         return 1   
+    res_num = 0
+    for i in range(num):
+        res_num += catalan_number(i) * catalan_number(num - i - 1)
+    return res_num
+","""""""
+Write a function which returns nth catalan number.
+assert catalan_number(10)==16796
+""""""
+",catalan_number
+Mbpp/589,"def perfect_squares(start, end):
+    # Import the math module to use the sqrt function
+    import math
+    
+    # Use list comprehension to find perfect squares within the range
+    result = [i ** 2 for i in range(int(math.sqrt(start)), int(math.sqrt(end)) + 1) if i ** 2 <= end]
+    return result",fail,fail,"[[50, 100]]","[[-10, -1]]","
+import math
+def perfect_squares(a, b):
+    if a > b:
+        a, b = b, a
+    if b < 0:
+        return []
+    if a < 0:
+        a = 0
+    return list(filter(lambda x: math.sqrt(x).is_integer(), range(a, b+1)))
+","""""""
+Write a function to find perfect squares between two given numbers.
+assert perfect_squares(1,30)==[1, 4, 9, 16, 25]
+""""""
+",perfect_squares
+Mbpp/597,"def find_kth(arr1, arr2, k):
+    # Base cases
+    if not arr1:
+        return arr2[k-1]
+    if not arr2:
+        return arr1[k-1]
+    # If k is 1, return the minimum of the first elements of both arrays
+    if k == 1:
+        return min(arr1[0], arr2[0])
+    
+    # Determine the middle elements of the arrays
+    mid1 = arr1[k//2-1] if k//2 <= len(arr1) else float('inf')
+    mid2 = arr2[k//2-1] if k//2 <= len(arr2) else float('inf')
+    
+    # If the middle element of the first array is less than the middle element of the second array
+    if mid1 < mid2:
+        return find_kth(arr1[k//2:], arr2, k - k//2)
+    else:
+        return find_kth(arr1, arr2[k//2:], k - k//2)",pass,fail,[],"[[[1, 2, 3], [True, True, False], 3]]","
+def find_kth(arr1, arr2, k):
+	return sorted(arr1 + arr2)[k - 1]
+","""""""
+Write a function to find kth element from the given two sorted arrays.
+assert find_kth([2, 3, 6, 7, 9], [1, 4, 8, 10], 5) == 6
+""""""
+",find_kth
+Mbpp/592,"def sum_Of_product(n):
+    # Initialize the sum to 0
+    sum = 0
+    # Calculate the sum of the product of consecutive binomial coefficients
+    for i in range(1, n):
+        sum += (n * (n - 1) // i * (i - 1))
+    return sum",fail,fail,[[3]],[[10]],"
+def binomial_Coeff(n, k): 
+    C = [0] * (k + 1); 
+    C[0] = 1; # nC0 is 1 
+    for i in range(1,n + 1):  
+        for j in range(min(i, k),0,-1): 
+            C[j] = C[j] + C[j - 1]; 
+    return C[k]; 
+def sum_Of_product(n): 
+    return binomial_Coeff(2 * n, n - 1); 
+","""""""
+Write a python function to find the sum of the product of consecutive binomial co-efficients.
+assert sum_Of_product(3) == 15
+""""""
+",sum_Of_product
+Mbpp/622,"def get_median(l1, l2, size):
+    # Initialize pointers for both lists
+    i = 0
+    j = 0
+    # List to store the sorted elements
+    sorted_elements = []
+    
+    # Traverse both lists and insert smaller of both elements in sorted_elements
+    while i < size and j < size:
+        if l1[i] < l2[j]:
+            sorted_elements.append(l1[i])
+            i += 1
+        else:
+            sorted_elements.append(l2[j])
+            j += 1
+    
+    # If there are remaining elements in list l1
+    while i < size:
+        sorted_elements.append(l1[i])
+        i += 1
+    
+    # If there are remaining elements in list l2
+    while j < size:
+        sorted_elements.append(l2[j])
+        j += 1
+    
+    # Calculate the median
+    if size % 2 == 0:
+        median = (sorted_elements[size // 2 - 1] + sorted_elements[size // 2]) / 2.0
+    else:
+        median = sorted_elements[size // 2]
+    
+    return median",fail,fail,"[[[1, 12, 15, 26, 38], [2, 13, 17, 30, 45], 5]]","[[[1, 4, 7, 10, 13, 16, 19, 22, 25, 28], [2, 5, 8, 11, 14, 17, 20, 23, 26, 29], 10]]","
+def get_median(arr1, arr2, n):
+  i = 0
+  j = 0
+  m1 = -1
+  m2 = -1
+  count = 0
+  while count < n + 1:
+    count += 1
+    if i == n:
+      m1 = m2
+      m2 = arr2[0]
+      break
+    elif j == n:
+      m1 = m2
+      m2 = arr1[0]
+      break
+    if arr1[i] <= arr2[j]:
+      m1 = m2
+      m2 = arr1[i]
+      i += 1
+    else:
+      m1 = m2
+      m2 = arr2[j]
+      j += 1
+  return (m1 + m2)/2
+","""""""
+Write a function to find the median of two sorted lists of same size.
+assert get_median([1, 12, 15, 26, 38], [2, 13, 17, 30, 45], 5) == 16.0
+""""""
+",get_median
+Mbpp/602,"def first_repeated_char(s):
+    # Dictionary to store the count of each character
+    char_count = {}
+    
+    # Iterate through the string
+    for char in s:
+        # Increment the count for each character
+        if char in char_count:
+            char_count[char] += 1
+        else:
+            char_count[char] = 1
+    
+    # Find the first character with a count greater than 1
+    for char in s:
+        if char_count[char] > 1:
+            return char
+    
+    # If no character is repeated
+    return None",pass,fail,[],[['abcdefgxhinjklmnopqrstuvwxyz']],"
+def first_repeated_char(str1):
+  for index, c in enumerate(str1):
+    if str1[:index + 1].count(c) > 1:
+      return c
+  return None
+","""""""
+Write a python function to find the first repeated character in a given string.
+assert first_repeated_char(""abcabc"") == ""a""
+""""""
+",first_repeated_char
+Mbpp/581,"def surface_Area(base_edge, height):
+    # Calculate the area of the base
+    base_area = base_edge ** 2
+    # Calculate the slant height
+    slant_height = ((base_edge / 2) ** 2 + height ** 2) ** 0.5
+    # Calculate the area of one triangular face
+    face_area = (base_edge * slant_height) / 2
+    # Calculate the total surface area
+    total_surface_area = base_area + (4 * face_area)
+    return total_surface_area",fail,fail,"[[3, 4]]","[[10, 20]]","
+def surface_Area(b,s): 
+    return 2 * b * s + pow(b,2) 
+","""""""
+Write a python function to find the surface area of a square pyramid with a given base edge and height.
+assert surface_Area(3,4) == 33
+""""""
+",surface_Area
+Mbpp/620,"def largest_subset(arr):
+    # Sort the array in descending order
+    arr.sort(reverse=True)
+    # Initialize a list to store the largest subset
+    subset = []
+    # Iterate through the sorted array
+    for num in arr:
+        # If the current number is divisible by any number in the subset, skip it
+        if not any(num % x == 0 or x % num == 0 for x in subset):
+            subset.append(num)
+    # Return the size of the largest subset
+    return len(subset)",fail,fail,"[[[1, 3, 6, 13, 17, 18]]]","[[[34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]]]","
+def largest_subset(a):
+	n = len(a)
+	dp = [0 for _ in range(n)]
+	dp[n - 1] = 1; 
+	for i in range(n - 2, -1, -1):
+		mxm = 0
+		for j in range(i + 1, n):
+			if a[j] % a[i] == 0 or a[i] % a[j] == 0:
+				mxm = max(mxm, dp[j])
+		dp[i] = 1 + mxm
+	return max(dp)
+","""""""
+Write a function to find the size of the largest subset of a list of numbers so that every pair is divisible.
+assert largest_subset([ 1, 3, 6, 13, 17, 18 ]) == 4
+""""""
+",largest_subset
+Mbpp/639,"def sample_nam(names):
+    # Filter names that start with an uppercase letter and sum their lengths
+    return sum(len(name) for name in names if name[0].isupper())",pass,fail,[],"[[['AbCdE', 'fGH', 'IJKLMnOp', 'qrs', 'TUVW', 'xyz']]]","
+def sample_nam(sample_names):
+  sample_names=list(filter(lambda el:el[0].isupper() and el[1:].islower(),sample_names))
+  return len(''.join(sample_names))
+","""""""
+Write a function to sum the length of the names of a given list of names after removing the names that start with a lowercase letter.
+assert sample_nam(['sally', 'Dylan', 'rebecca', 'Diana', 'Joanne', 'keith'])==16
+""""""
+",sample_nam
+Mbpp/638,"def wind_chill(velocity, temperature):
+    # Calculate wind chill index using the formula
+    if velocity >= 3 and temperature < 10.5:
+        wind_chill_index = 13.12 + 0.6215 * temperature - 11.37 * (velocity ** 0.16) + 0.3965 * temperature * (velocity ** 0.16)
+        return round(wind_chill_index)
+    else:
+        return temperature",fail,fail,"[[120, 35]]","[[0, 0]]","
+import math
+def wind_chill(v,t):
+ windchill = 13.12 + 0.6215*t -  11.37*math.pow(v, 0.16) + 0.3965*t*math.pow(v, 0.16)
+ return int(round(windchill, 0))
+","""""""
+Write a function to calculate the wind chill index rounded to the next integer given the wind velocity in km/h and a temperature in celsius.
+assert wind_chill(120,35)==40
+""""""
+",wind_chill
+Mbpp/721,"def maxAverageOfPath(matrix):
+    n = len(matrix)
+    if n == 0:
+        return 0
+
+    # Initialize the DP table
+    dp = [[0] * n for _ in range(n)]
+    dp[0][0] = matrix[0][0]
+
+    # Fill the first row
+    for j in range(1, n):
+        dp[0][j] = dp[0][j - 1] + matrix[0][j]
+
+    # Fill the first column
+    for i in range(1, n):
+        dp[i][0] = dp[i - 1][0] + matrix[i][0]
+
+    # Fill the rest of the dp table
+    for i in range(1, n):
+        for j in range(1, n):
+            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]) + matrix[i][j]
+
+    # Calculate the maximum average path
+    total_sum = dp[n - 1][n - 1]
+    max_avg = total_sum / n
+
+    return max_avg",fail,fail,"[[[[1, 2, 3], [6, 5, 4], [7, 3, 9]]]]","[[[[0, 0, 0], [0, 0, 0], [0, 0, -1]]]]","
+def maxAverageOfPath(cost):
+  N = len(cost)
+  dp = [[0 for _ in range(N + 1)] for _ in range(N + 1)]
+  dp[0][0] = cost[0][0]
+  for i in range(1, N):
+    dp[i][0] = dp[i - 1][0] + cost[i][0]
+  for j in range(1, N):
+    dp[0][j] = dp[0][j - 1] + cost[0][j]
+  for i in range(1, N):
+    for j in range(1, N):
+      dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]) + cost[i][j]
+  # all paths are of length 2 * N - 1, so just divide by that
+  return dp[N - 1][N - 1] / (2 * N - 1)
+","""""""
+Given a square matrix of size N*N given as a list of lists, where each cell is associated with a specific cost. A path is defined as a specific sequence of cells that starts from the top-left cell move only right or down and ends on bottom right cell. We want to find a path with the maximum average over all existing paths. Average is computed as total cost divided by the number of cells visited in the path.
+assert maxAverageOfPath([[1, 2, 3], [6, 5, 4], [7, 3, 9]]) == 5.2
+""""""
+",maxAverageOfPath
+Mbpp/752,"def jacobsthal_num(n):
+    # Base cases
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    # Initialize the first two Jacobsthal numbers
+    a, b = 0, 1
+    # Compute the nth Jacobsthal number iteratively
+    for _ in range(2, n + 1):
+        a, b = b, 2 * b + a
+    return b",fail,fail,[[5]],[[100]],"
+def jacobsthal_num(n): 
+	dp = [0] * (n + 1) 
+	dp[0] = 0
+	dp[1] = 1
+	for i in range(2, n+1): 
+		dp[i] = dp[i - 1] + 2 * dp[i - 2] 
+	return dp[n]
+","""""""
+Write a function to find the nth jacobsthal number.  0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, ...
+assert jacobsthal_num(5) == 11
+""""""
+",jacobsthal_num
+Mbpp/725,"def extract_quotation(str1):
+    # Initialize an empty list to store the results
+    result = []
+    # Split the string by spaces to handle each word separately
+    for word in str1.split(' '):
+        # Check if the word contains quotation marks and extract the content
+        if '""' in word:
+            # Split the word by quotation marks and add the inner content to the result list
+            for part in word.split('""'):
+                if part and part != ' ':
+                    result.append(part)
+    return result",fail,fail,"[['Watch content ""4k Ultra HD"" resolution with ""HDR 10"" Support']]","[['This is a ""nested \'quote\'"" example']]","
+import re
+def extract_quotation(text1):
+  return re.findall(r'""(.*?)""', text1)
+","""""""
+Write a function to extract values between quotation marks "" "" of the given string.
+assert extract_quotation('Cortex ""A53"" Based ""multi"" tasking ""Processor""') == ['A53', 'multi', 'Processor']
+""""""
+",extract_quotation
+Mbpp/722,"def filter_data(students, min_height, min_weight):
+    # Filter students based on height and weight criteria
+    filtered_students = {name: (height, weight) for name, (height, weight) in students.items() if height > min_height and weight > min_weight}
+    return filtered_students",fail,fail,"[[{'Cierra Vega': [6.2, 70], 'Alden Cantrell': [5.9, 65], 'Kierra Gentry': [6.0, 68], 'Pierre Cox': [5.8, 66]}, 6.0, 70]]","[[{'Alice': [5.6, 60], 'Bob': [6.1, 70], 'Charlie': [5.9, 65], 'Dave': [5.11, 72], 'Eve': [6.0, 68], 'Frank': [5.7, 63]}, 5.8, 65]]","
+def filter_data(students,h,w):
+    return {k: s for k, s in students.items() if s[0] >= h and s[1] >= w}
+","""""""
+The input is given as - a dictionary with a student name as a key and a tuple of float (student_height, student_weight) as a value, - minimal height, - minimal weight. Write a function to filter students that have height and weight above the minimum.
+assert filter_data({'Cierra Vega': (6.2, 70), 'Alden Cantrell': (5.9, 65), 'Kierra Gentry': (6.0, 68), 'Pierre Cox': (5.8, 66)},6.0,70)=={'Cierra Vega': (6.2, 70)}
+""""""
+",filter_data
+Mbpp/735,"def toggle_middle_bits(n):
+    # Calculate the number of bits in the integer
+    num_bits = n.bit_length()
+    
+    # If there are less than 3 bits, toggling doesn't make sense
+    if num_bits < 3:
+        return n
+    
+    # Create a mask that has all bits set except the first and last
+    mask = (1 << (num_bits - 1)) - 2
+    
+    # Toggle the middle bits using XOR
+    result = n ^ mask
+    
+    return result",pass,fail,[],[[True]],"
+def toggle_middle_bits(n): 
+    binary = bin(n)[2:]
+    toggled = ''.join(['0' if i == '1' else '1' for i in binary[1:-1]])
+    return int(binary[0] + toggled + binary[-1], 2)
+","""""""
+Write a python function to toggle bits of the number except the first and the last bit. 
+assert toggle_middle_bits(9) == 15
+""""""
+",toggle_middle_bits
+Mbpp/287,"def square_Sum(n):
+    # Calculate the sum of squares of the first n even natural numbers
+    return sum([(2 * i) ** 2 for i in range(1, n + 1)])",pass,fail,[],[[1000000]],"
+def square_Sum(n):  
+    return 2 * n * (n + 1) * (2 * n + 1) /3
+","""""""
+Write a python function takes in an integer n and returns the sum of squares of first n even natural numbers.
+assert square_Sum(2) == 20
+""""""
+",square_Sum
+Mbpp/739,"def find_Index(n):
+    # Calculate the lower bound for the index of the smallest n-digit triangular number
+    low = 1
+    # Calculate the upper bound for the index of the smallest n-digit triangular number
+    high = 10 ** n
+    # Use binary search to find the smallest index
+    while low < high:
+        mid = (low + high) // 2
+        # Calculate the triangular number at the mid index
+        if mid * (mid + 1) // 2 < 10 ** (n - 1):
+            low = mid + 1
+        else:
+            high = mid
+    return low",pass,fail,[],[[100]],"
+import math 
+def find_Index(n): 
+    x = math.sqrt(2 * math.pow(10,(n - 1)))
+    return round(x)
+","""""""
+Write a python function to find the index of smallest triangular number with n digits. 
+assert find_Index(2) == 4
+""""""
+",find_Index
+Mbpp/745,"def divisible_by_digits(startnum, endnum):
+    # Iterate through the range from startnum to endnum (inclusive)
+    result = [num for num in range(startnum, endnum + 1) if all(num % int(digit) == 0 for digit in str(num))]
+    return result",fail,fail,"[[1, 22]]","[[100, 200]]","
+def divisible_by_digits(startnum, endnum):
+    return [n for n in range(startnum, endnum+1) \
+                if not any(map(lambda x: int(x) == 0 or n%int(x) != 0, str(n)))]
+","""""""
+Write a function to find numbers within a given range from startnum ti endnum where every number is divisible by every digit it contains. 
+assert divisible_by_digits(1,22)==[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22]
+""""""
+",divisible_by_digits
+Mbpp/748,"def capital_words_spaces(str1):
+    # Split the string into words based on capital letters
+    words = []
+    current_word = """"
+    for char in str1:
+        if char.isupper():
+            if current_word:
+                words.append(current_word)
+                current_word = """"
+            words.append(char)
+        else:
+            current_word += char
+    if current_word:
+        words.append(current_word)
+    # Join the words with a space
+    return ' '.join(words)",fail,fail,[['Python']],[['MyNameIsAIAndIAmHereToHelpYou']],"
+import re
+def capital_words_spaces(str1):
+  return re.sub(r""(\w)([A-Z])"", r""\1 \2"", str1)
+","""""""
+Write a function to put spaces between words starting with capital letters in a given string.
+assert capital_words_spaces(""Python"") == 'Python'
+""""""
+",capital_words_spaces
+Mbpp/749,"def sort_numeric_strings(lst):
+    # Convert all strings to integers for proper numerical sorting
+    # Use sorted function to sort the list numerically
+    return sorted(lst, key=int)",fail,fail,"[[['4', '12', '45', '7', '0', '100', '200', '-12', '-500']]]","[[['10000000000', '99999999', '88888888', '7777777', '666666', '-55555', '-4444', '-333', '222', '111', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1']]]","
+def sort_numeric_strings(nums_str):
+    return sorted([int(x) for x in nums_str])
+","""""""
+Write a function to sort a given list of strings of numbers numerically. 
+assert sort_numeric_strings( ['4','12','45','7','0','100','200','-12','-500'])==[-500, -12, 0, 4, 7, 12, 45, 100, 200]
+""""""
+",sort_numeric_strings
+Mbpp/792,"def count_list(lists):
+    # Return the count of the lists
+    return len(lists)",pass,fail,[],"[[[2, 3, [4, [5, [6, [7, [8, 9]]]]]]]]","
+def count_list(input_list): 
+    return sum(isinstance(e, list) for e in input_list)
+","""""""
+Write a python function to count the number of lists in a given number of lists.
+assert count_list([[1, 3], [5, 7], [9, 11], [13, 15, 17]]) == 4
+""""""
+",count_list
+Mbpp/771,"def check_expression(exp): 
+    # Initialize a counter for the balance check
+    counter = 0
+    # Iterate through each character in the expression
+    for char in exp: 
+        # If an opening bracket is found, increment the counter
+        if char in ('{', '[', '('): 
+            counter += 1
+        # If a closing bracket is found, decrement the counter
+        elif char in ('}', ']', ')'): 
+            counter -= 1
+        # If at any point the counter is negative, the expression is unbalanced
+        if counter < 0: 
+            return False
+    # If the counter is zero at the end, the expression is balanced
+    return counter == 0",pass,fail,[],[['']],"
+from collections import deque
+def check_expression(exp):
+    if len(exp) == 0 or len(exp) % 2 == 1:
+        return False
+    stack = deque()
+    for ch in exp:
+        if ch == '(' or ch == '{' or ch == '[':
+            stack.append(ch)
+        if ch == ')' or ch == '}' or ch == ']':
+            if not stack:
+                return False
+            top = stack.pop()
+            if (top == '(' and ch != ')') or (top == '{' and ch != '}' or (top == '[' and ch != ']')):
+                return False
+    return not stack
+","""""""
+Write a function to check if the given expression is balanced or not. 
+assert check_expression(""{()}[{}]"") == True
+""""""
+",check_expression
+Mbpp/786,"def right_insertion(a, k):
+    # Iterate through the list to find the right insertion point
+    for i in range(len(a)):
+        if a[i] >= k:
+            return i
+    # If k is greater than all elements, return the length of the list
+    return len(a)",pass,fail,[],"[[[50.64327388212607, -72.16612625583227, 95.25630303581863, -75.73998556144497, 11.857449640680656, 90.05081633927793, -90.20293226837086, -12.02758648076636, -35.964731488229475], 7]]","
+import bisect
+def right_insertion(a, x):
+    return bisect.bisect_right(a, x)
+","""""""
+Write a function to locate the right insertion point for a specified value in sorted order.
+assert right_insertion([1,2,4,5],6)==4
+""""""
+",right_insertion
+Mbpp/763,"def find_min_diff(arr, n):
+    # Sort the array to make it easier to find the minimum difference
+    arr.sort()
+    
+    # Initialize the minimum difference to a large number
+    min_diff = float('inf')
+    
+    # Iterate through the array and find the minimum difference between consecutive elements
+    for i in range(n-1):
+        if arr[i+1] - arr[i] < min_diff:
+            min_diff = arr[i+1] - arr[i]
+    
+    return min_diff",fail,fail,"[[[1, 5, 3, 19, 18, 25], 6]]","[[[15, 12, 20, 30, 8, 4, 19, 37, 22, 28, 11, 25], 12]]","
+def find_min_diff(arr,n): 
+    arr = sorted(arr) 
+    diff = 10**20 
+    for i in range(n-1): 
+        if arr[i+1] - arr[i] < diff: 
+            diff = arr[i+1] - arr[i]  
+    return diff 
+","""""""
+Write a python function to find the minimum difference between any two elements in a given array. 
+assert find_min_diff((1,5,3,19,18,25),6) == 1
+""""""
+",find_min_diff
+Mbpp/790,"def even_position(lst):
+    # Iterate through the list, checking only even indices
+    for i in range(0, len(lst), 2):
+        # Check if the number at the even index is not even
+        if lst[i] % 2 != 0:
+            return False
+    # If all even indices have even numbers, return True
+    return True",pass,fail,[],"[[[2, 1, 4, 2, 6, 1, 8, 2, 10, 1, 12]]]","
+def even_position(nums):
+	return all(nums[i]%2==i%2 for i in range(len(nums)))
+","""""""
+Write a python function to check whether every even index contains even numbers of a given list.
+assert even_position([3,2,1]) == False
+""""""
+",even_position
+Mbpp/773,"def occurance_substring(s1, s2):
+    # Check if s2 is a substring of s1
+    if s2 in s1:
+        # Find the starting index of the first occurrence
+        start_index = s1.index(s2)
+        # Return the substring, its first occurrence, and its position
+        return (s2, start_index, start_index + len(s2) - 1)
+    else:
+        # Return None if there is no match
+        return None",fail,fail,"[['python programming, python language', 'python']]","[['', '']]","
+import re
+def occurance_substring(text,pattern):
+ for match in re.finditer(pattern, text):
+    s = match.start()
+    e = match.end()
+    return (text[s:e], s, e)
+ return None
+","""""""
+Write a function to find the occurrence and position of the substrings within a string. Return None if there is no match.
+assert occurance_substring('python programming, python language','python')==('python', 0, 6)
+""""""
+",occurance_substring
+Mbpp/757,"def count_reverse_pairs(test_list):
+    # Initialize the count of reverse pairs
+    res = 0
+    # Create a set to store the strings in lowercase for case-insensitive comparison
+    test_list = [ele.lower() for ele in test_list]
+    # Create a set to store the seen strings
+    seen = set()
+    
+    # Iterate through each string in the list
+    for idx in range(len(test_list)):
+        # Reverse the current string
+        test_list[idx] = test_list[idx][::-1]
+        # Check if the reversed string is in the seen set
+        if test_list[idx] in seen:
+            # Increment the count of reverse pairs
+            res += 1
+        else:
+            # Add the original string to the seen set
+            seen.add(test_list[idx])
+    
+    return res",fail,fail,"[[['julia', 'best', 'tseb', 'for', 'ailuj']]]","[[['app', '123', 'ad3', 'apple', 'elppa', 'xyx', 'bat', 'tab', 'tacocat', 'racecar', 'abc', 'zyx', 'def', 'fed']]]","
+def count_reverse_pairs(test_list):
+  return sum(test_list[i+1:].count(s[::-1]) for i, s in enumerate(test_list))
+","""""""
+Write a function to count the pairs of reverse strings in the given string list. 
+assert count_reverse_pairs([""julia"", ""best"", ""tseb"", ""for"", ""ailuj""])== 2
+""""""
+",count_reverse_pairs
+Mbpp/777,"def find_sum(lst):
+    # Create a dictionary to count occurrences of each element
+    count = {}
+    for num in lst:
+        if num in count:
+            count[num] += 1
+        else:
+            count[num] = 1
+    
+    # Calculate the sum of elements that occur exactly once
+    result = 0
+    for num, freq in count.items():
+        if freq == 1:
+            result += num
+    
+    return result",fail,fail,"[[[1, 2, 3, 1, 1, 4, 5, 6]]]","[[[-1, -2, -3, -1, -1, -4, -5, -6]]]","
+def find_sum(arr): 
+    return sum(set(arr))
+","""""""
+Write a python function to find the sum of non-repeated elements in a given list.
+assert find_sum([1,2,3,1,1,4,5,6]) == 21
+""""""
+",find_sum
+Mbpp/759,"def is_decimal(string_num):
+    # Check if the string is a valid decimal number with precision of 2
+    try:
+        # Attempt to convert the string to a float
+        float_num = float(string_num)
+        # Check if the float number has exactly 2 decimal places
+        return float_num == round(float_num, 2)
+    except ValueError:
+        # If conversion fails, it's not a valid decimal number
+        return False",pass,fail,[],[['-123.11']],"
+def is_decimal(num):
+    import re
+    dnumre = re.compile(r""""""^[0-9]+(\.[0-9]{1,2})?$"""""")
+    return dnumre.search(num) is not None
+","""""""
+Write a function to check whether a given string is a decimal number with a precision of 2.
+assert is_decimal('123.11')==True
+""""""
+",is_decimal
+Mbpp/780,"def find_combinations(lst):
+    # Generate all possible combinations of sums from the tuple list
+    result = [tuple(sorted(x + y)) for x in lst for y in lst if x != y]
+    return result",fail,fail,"[[[[1, 2, 3], [3, 4, 5]]]]","[[[[100, 200], [300, 400], [500, 600], [700, 800]]]]","
+from itertools import combinations 
+def find_combinations(test_list):
+  return [tuple(map(sum, zip(*t))) for t in combinations(test_list, 2)]
+","""""""
+Write a function to find the combinations of sums with tuples in the given tuple list. 
+assert find_combinations([(2, 4), (6, 7), (5, 1), (6, 10)]) == [(8, 11), (7, 5), (8, 14), (11, 8), (12, 17), (11, 11)]
+""""""
+",find_combinations
+Mbpp/791,"def remove_nested(test_tup):
+    # Initialize an empty list to store the result
+    res = []
+    # Iterate through each element in the tuple
+    for sub in test_tup:
+        # If the element is not a tuple, append it to the result list
+        if not isinstance(sub, tuple):
+            res.append(sub)
+        else:
+            # If the element is a tuple, extend the result list with its elements
+            res.extend(sub)
+    # Convert the result list back to a tuple and return it
+    return tuple(res)",fail,fail,"[[[1, 5, 7, [4, 6], 10]]]","[[[2, 6, 8, [5, 7], 11, [[2, 9], [6, 3]], 4]]]","
+def remove_nested(test_tup):
+  return tuple(e for e in test_tup if not isinstance(e, tuple))
+","""""""
+Write a function to remove tuples from the given tuple.
+assert remove_nested((1, 5, 7, (4, 6), 10)) == (1, 5, 7, 10)
+""""""
+",remove_nested
+Mbpp/794,"def text_starta_endb(text):
+    # Check if the text starts with 'a' followed by any characters and ends with 'b'
+    if text.startswith('a') and text.endswith('b'):
+        return True
+    else:
+        return False",pass,fail,[],[['xaabbyz1323ababb']],"
+import re
+def text_starta_endb(text):
+    patterns = 'a.*?b$'
+    return re.search(patterns,  text)
+","""""""
+Write a function that matches a string that has an 'a' followed by anything, ending in 'b'.
+assert text_starta_endb(""aabbbb"")
+""""""
+",text_starta_endb
+Mbpp/769,"def Diff(list1, list2):
+    # Convert lists to sets and find the difference
+    result = list(set(list1) - set(list2))
+    # Sort the result to match the expected order
+    result.sort()
+    return result",fail,fail,"[[[1, 2, 3, 4, 5], [6, 7, 1]]]","[[[], [1, 2, 3]]]","
+def Diff(li1,li2):
+    return list(set(li1)-set(li2)) + list(set(li2)-set(li1))
+ 
+","""""""
+Write a python function to get the difference between two lists.
+assert (Diff([10, 15, 20, 25, 30, 35, 40], [25, 40, 35])) == [10, 20, 30, 15]
+""""""
+",Diff
+Mbpp/778,"def pack_consecutive_duplicates(lst):
+    # Initialize an empty list to store the result
+    result = []
+    # Initialize an empty list to track the current consecutive elements
+    temp = []
+    
+    # Iterate through the list
+    for i in range(len(lst)):
+        # If the current element is the same as the last one in temp, add it to temp
+        if i == 0 or lst[i] == lst[i - 1]:
+            temp.append(lst[i])
+        else:
+            # Otherwise, add the temp list to result and reset temp with the current element
+            result.append(temp)
+            temp = [lst[i]]
+    
+    # Add the last temp list to result
+    result.append(temp)
+    
+    return result",pass,fail,[],[[[]]],"
+from itertools import groupby
+def pack_consecutive_duplicates(list1):
+    return [list(group) for _, group in groupby(list1)]
+","""""""
+Write a function to pack consecutive duplicates of a given list elements into sublists.
+assert pack_consecutive_duplicates([0, 0, 1, 2, 3, 4, 4, 5, 6, 6, 6, 7, 8, 9, 4, 4])==[[0, 0], [1], [2], [3], [4, 4], [5], [6, 6, 6], [7], [8], [9], [4, 4]]
+""""""
+",pack_consecutive_duplicates
+Mbpp/787,"def text_match_three(text):
+    # Check if the text contains 'a' followed by exactly three 'b's
+    return bool(text and text[0] == 'a' and text[1:4] == 'bbb')",fail,pass,[['caacabbbba']],[],"
+import re
+def text_match_three(text):
+        patterns = 'ab{3}?'
+        return re.search(patterns,  text)
+","""""""
+Write a function that matches a string that has an a followed by three 'b'.
+assert not text_match_three(""ac"")
+""""""
+",text_match_three
+Mbpp/801,"def test_three_equal(a, b, c):
+    # Calculate the number of equal numbers among the three integers
+    count = sum([a == b, b == c, a == c])
+    return count",fail,fail,"[[1, 2, 2]]","[[10, 10, 20]]","
+def test_three_equal(x,y,z):
+  result = set([x,y,z])
+  if len(result) == 3:
+    return 0
+  elif len(result) == 2:
+    return 2
+  else:
+    return 3
+","""""""
+Write a python function to count the number of equal numbers from three given integers.
+assert test_three_equal(1,1,1) == 3
+""""""
+",test_three_equal
+Mbpp/806,"def max_run_uppercase(str1):
+    # Initialize variables to track the maximum length and current length of uppercase characters
+    max_len = 0
+    current_len = 0
+    
+    # Iterate through each character in the string
+    for char in str1:
+        # Check if the character is uppercase
+        if char.isupper():
+            # Increment the current length of uppercase characters
+            current_len += 1
+            # Update the maximum length if the current length is greater
+            max_len = max(max_len, current_len)
+        else:
+            # Reset the current length if a non-uppercase character is found
+            current_len = 0
+    
+    return max_len",pass,fail,[],[['Aaa']],"
+def max_run_uppercase(test_str):
+  cnt = 0
+  res = 0
+  for idx in range(0, len(test_str)):
+    if test_str[idx].isupper():
+      cnt += 1
+    else:
+      res = cnt
+      cnt = 0
+  if test_str[len(test_str) - 1].isupper():
+    res = cnt
+  return res
+","""""""
+Write a function to find maximum run of uppercase characters in the given string.
+assert max_run_uppercase('GeMKSForGERksISBESt') == 5
+""""""
+",max_run_uppercase
+Mbpp/630,"def get_coordinates(point):
+    # Extract the x and y coordinates from the input tuple
+    x, y = point
+    # Generate all adjacent coordinates
+    adjacent_coords = [
+        [x - 1, y - 1], [x - 1, y], [x - 1, y + 1],
+        [x, y - 1], [x, y + 1],
+        [x + 1, y - 1], [x + 1, y], [x + 1, y + 1]
+    ]
+    return adjacent_coords",fail,fail,"[[[3, 4]]]","[[[1, 1, 1]]]","
+def adjac(ele, sub = []): 
+  if not ele: 
+     yield sub 
+  else: 
+     yield from [idx for j in range(ele[0] - 1, ele[0] + 2) 
+                for idx in adjac(ele[1:], sub + [j])] 
+def get_coordinates(test_tup):
+  return list(adjac(test_tup))
+","""""""
+Write a function to extract all the adjacent coordinates of the given coordinate tuple.
+assert get_coordinates((3, 4)) == [[2, 3], [2, 4], [2, 5], [3, 3], [3, 4], [3, 5], [4, 3], [4, 4], [4, 5]]
+""""""
+",get_coordinates
+Mbpp/765,"def is_polite(n):
+    # Initialize count of polite numbers found and number to check
+    count, num = 0, 1
+    
+    # Loop until we find the nth polite number
+    while count < n:
+        # If num is not a power of 2, it's a polite number
+        if (num & (num - 1)) != 0:
+            count += 1
+        if count == n:
+            return num
+        num += 1",pass,fail,[],[[10000000]],"
+import math 
+def is_polite(n): 
+	n = n + 1
+	return (int)(n+(math.log((n + math.log(n, 2)), 2))) 
+","""""""
+Write a function to find nth polite number. geeksforgeeks.org/n-th-polite-number/
+assert is_polite(7) == 11
+""""""
+",is_polite
+Mbpp/255,"from itertools import product
+def combinations_colors(colors, n):
+    # Generate combinations with repetition using product from itertools
+    combinations = list(product(colors, repeat=n))
+    # Convert tuples to the required format
+    result = [tuple(combination) for combination in combinations]
+    return result",fail,fail,"[[['Red', 'Green', 'Blue'], 2]]","[[['A', 'B', 'C', 'D'], 4]]","
+from itertools import combinations_with_replacement 
+def combinations_colors(l, n):
+    return list(combinations_with_replacement(l, n))
+","""""""
+Write a function that takes in a list and length n, and generates all combinations (with repetition) of the elements of the list and returns a list with a tuple for each combination.
+assert combinations_colors( [""Red"",""Green"",""Blue""],1)==[('Red',), ('Green',), ('Blue',)]
+""""""
+",combinations_colors
