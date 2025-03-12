@@ -32,10 +32,14 @@ def get_teacher_feedback(client, teacher_system_prompt, teacher_prompt, model, m
     )
     return response
 
-def build_prompt(student_prompt, student_answer, base_fail_tests, plus_fail_tests, reference_code):
+def build_prompt(student_prompt, student_answer, base_fail_tests, plus_fail_tests, reference_code, retrieved=None):
     teacher_prompt = "Please help me solve this problem."
     teacher_prompt += f"\n\nOriginal question:\n{student_prompt}\n\nStudent answer:\n{student_answer}"
     teacher_prompt += f"\n\nFailed inputs:\n{base_fail_tests + plus_fail_tests}"
+    if retrieved:
+        retrieved = eval(retrieved)
+        retrieved = retrieved[:3]
+        teacher_prompt += f"\n\nPotentially relevant retrieved examples:\n{json.dumps(retrieved, indent=2)}"
     teacher_prompt += f"\n\nWhat feedback can you give me to help me solve this problem?\n\n"
     return teacher_prompt
 
@@ -44,7 +48,8 @@ def get_feedback_for_all_errors(df, client, model, teacher_system_prompt):
     df = df.copy()
     df['feedback'] = None
     for i, row in tqdm(df.iterrows(), total=len(df), desc="Getting feedback"):
-        prompt = build_prompt(row['question_prompt'], row['solution'], row['base_fail_tests'], row['plus_fail_tests'], row['gt_solution'])
+        retrieved = (row['retrieved'] if 'retrieved' in df.columns else None)
+        prompt = build_prompt(row['question_prompt'], row['solution'], row['base_fail_tests'], row['plus_fail_tests'], row['gt_solution'], retrieved=retrieved)
         response = get_teacher_feedback(client, teacher_system_prompt, prompt, model)
         assert len(response.choices) == 1, "Expected exactly one response"
         feedback = response.choices[0].message.content
