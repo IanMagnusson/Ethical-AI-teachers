@@ -1,10 +1,20 @@
 import argparse
+import random
 
+import numpy as np
 import pandas as pd
+import torch
 
 from codegen import run_codegen
 from data.mbpp import get_mbpp_plus
 from evaluate import evaluate
+
+def set_seed_everywhere(seed):
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
 
 def main(args):
     model_name = args.model
@@ -14,6 +24,9 @@ def main(args):
     root = args.root
     use_mini = args.use_mini
     feedback_file = args.feedback_file
+    seed = args.seed
+    
+    set_seed_everywhere(seed)
     
     if feedback_file:
         print(f"Loading feedback from {feedback_file}")
@@ -50,7 +63,7 @@ def main(args):
         # take only the first 10 tasks
         mbpp_dataset = {k: mbpp_dataset[k] for k in mbpp_keys[:10]}
                                     
-    samples_path = run_codegen(model_name, tp=num_gpus, dataset="mbpp", dataset_files=mbpp_dataset, backend="vllm", greedy=True, debug=debug, root=root, use_mini=use_mini)
+    samples_path = run_codegen(model_name, tp=num_gpus, dataset="mbpp", dataset_files=mbpp_dataset, backend="vllm", greedy=True, debug=debug, root=root, use_mini=use_mini, seed=seed)
             
     evaluate(
         dataset="mbpp",
@@ -60,6 +73,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    
+    parser.add_argument("--seed", type=int, default=42, help="Seed for random number generator")
     
     # Model
     parser.add_argument("--model", type=str, default="meta-llama/Llama-3.1-8B-Instruct")

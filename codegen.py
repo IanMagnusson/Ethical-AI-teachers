@@ -152,6 +152,7 @@ def run_codegen(
     debug: bool = False,
     use_mini: bool = False,
     feedback_file: Optional[str] = None,
+    seed: int = None,
 ):
     assert dataset in ["humaneval", "mbpp", "evalperf"], f"Invalid dataset {dataset}"
     assert dataset_files is not None, "dataset_files must be provided if dataset is not provided"

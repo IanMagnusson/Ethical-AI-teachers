@@ -43,7 +43,8 @@ def make_model(
             enable_prefix_caching=enable_prefix_caching,
             enable_chunked_prefill=enable_chunked_prefill,
             dtype=dtype,
-            gguf_file=gguf_file
+            gguf_file=gguf_file,
+            seed=seed,
         )
     elif backend == "hf":
         from provider.hf import HuggingFaceDecoder

@@ -20,6 +20,7 @@ class VllmDecoder(DecoderBase):
         enable_prefix_caching=False,
         enable_chunked_prefill=False,
         gguf_file: str = None,
+        seed: int = None,
         **kwargs
     ) -> None:
         super().__init__(name, **kwargs)
@@ -44,7 +45,7 @@ class VllmDecoder(DecoderBase):
             self.eos += extra_eos_for_direct_completion(dataset)
         else:
             self.eos += ["\n```\n"]
-        self.llm = LLM(model=name, max_model_len=2048, **kwargs)
+        self.llm = LLM(model=name, max_model_len=2048, seed=seed, **kwargs)
 
     def is_direct_completion(self) -> bool:
         return self.force_base_prompt or self.tokenizer.chat_template is None
