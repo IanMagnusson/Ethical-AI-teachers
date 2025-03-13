@@ -5,6 +5,7 @@ import pandas as pd
 from codegen import run_codegen
 from data.mbpp import get_mbpp_plus
 from evaluate import evaluate
+import json
 
 def main(args):
     model_name = args.model
@@ -18,6 +19,9 @@ def main(args):
     if feedback_file:
         print(f"Loading feedback from {feedback_file}")
         feedback_df = pd.read_csv(feedback_file)
+        if args.retrieval_as_feedback:
+            feedback_df["retrieved"] = feedback_df["retrieved"].apply(eval).apply(lambda x: x[:3]).apply(lambda x: json.dumps(x, indent=2))
+            feedback_df["feedback"] = feedback_df["retrieved"]
         feedback_df_task_ids = feedback_df["task_id"].values
         
         for key in mbpp_dataset.keys():
@@ -75,5 +79,6 @@ if __name__ == "__main__":
     parser.add_argument("--use_mini", action="store_true", help="Use mini dataset")
     parser.add_argument("--debug", action="store_true", help="Debug mode")
     parser.add_argument("--feedback_only", action="store_true", help="Condition on just the feedback without the questions or failed guess.")
+    parser.add_argument("--retrieval_as_feedback", action="store_true", help="Use retrieval as feedback")
     args = parser.parse_args()
     main(args)
