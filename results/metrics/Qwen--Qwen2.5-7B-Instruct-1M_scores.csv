@@ -1,0 +1,10 @@
+setup,model,base_accuracy,plus_accuracy
+mbpp_just_feedback_gpt-3.5-turbo,Qwen--Qwen2.5-7B-Instruct-1M,0.8650793650793651,0.7486772486772487
+mbpp_just_retrieval_as_feedback,Qwen--Qwen2.5-7B-Instruct-1M,0.8068783068783069,0.7195767195767195
+mbpp_retrieval_as_feedback_gpt-3.5-turbo_no_cheat_no_question,Qwen--Qwen2.5-7B-Instruct-1M,0.8386243386243386,0.753968253968254
+mbpp_just_feedback_rag_teacher_gpt-3.5-turbo_no_cheat_no_question,Qwen--Qwen2.5-7B-Instruct-1M,0.8042328042328042,0.708994708994709
+mbpp_just_feedback_gpt-3.5-turbo_no_cheat_no_question,Qwen--Qwen2.5-7B-Instruct-1M,0.8042328042328042,0.7248677248677249
+mbpp_with_feedback_gpt-3.5-turbo_no_cheat_no_question,Qwen--Qwen2.5-7B-Instruct-1M,0.8174603174603174,0.7248677248677249
+mbpp_with_feedback_gpt-3.5-turbo,Qwen--Qwen2.5-7B-Instruct-1M,0.8571428571428571,0.7433862433862434
+mbpp_with_rag_teacher_feedback_gpt-3.5-turbo_no_cheat_no_question,Qwen--Qwen2.5-7B-Instruct-1M,0.8227513227513228,0.7248677248677249
+baseline,Qwen--Qwen2.5-7B-Instruct-1M,0.791005291005291,0.6984126984126984
