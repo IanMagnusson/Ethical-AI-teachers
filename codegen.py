@@ -260,6 +260,7 @@ def run_codegen(
         dtype=dtype,
         gptqmodel_backend=gptqmodel_backend,
         gguf_file=gguf_file,
+        seed=seed,
     )
 
     codegen(
