@@ -22,6 +22,8 @@ def extra_eos_for_direct_completion(dataset) -> List[str]:
 # some random words which serves as the splitter
 _MAGIC_SPLITTER_ = "-[[]]-this-is-really-our-highest-priority-[[]]-"
 
+def make_feedback_only_prompt(feedback: str) -> str:
+
 
 def make_raw_chat_prompt(
     task_prompt: str,
@@ -32,6 +34,8 @@ def make_raw_chat_prompt(
     feedback: str = None,
     debug: bool = False,
 ) -> str:
+    if feedback is not None and init_soln is None:
+        task_prompt = feedback
     # directly return prompt if it does not have a tokenizer.chat_template
     if tokenizer.chat_template is None:
         return task_prompt
