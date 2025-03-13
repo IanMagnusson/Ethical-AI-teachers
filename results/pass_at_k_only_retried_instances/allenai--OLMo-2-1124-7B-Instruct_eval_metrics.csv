@@ -1,0 +1,5 @@
+exp_id,model,base_helpfulness,base_nonleak_helpfulness,base_leakage_freq,plus_helpfulness,plus_nonleak_helpfulness,plus_leakage_freq
+Teacher Feedback,allenai--OLMo-2-1124-7B-Instruct,0.185,0.0,0.627,0.143,0.0,0.526
+Teacher Feedback (No Cheat No Question),allenai--OLMo-2-1124-7B-Instruct,0.05,0.0,0.384,0.042,0.0,0.384
+Teacher Feedback with RAG,allenai--OLMo-2-1124-7B-Instruct,0.056,0.0,0.376,0.053,0.0,0.37
+RAG Feedback,allenai--OLMo-2-1124-7B-Instruct,0.032,0.0,0.413,0.034,0.0,0.405

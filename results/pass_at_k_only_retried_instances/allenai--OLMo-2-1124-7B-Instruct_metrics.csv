@@ -1,8 +1,0 @@
-setup,model,base_accuracy,plus_accuracy
-mbpp_just_feedback_gpt-3.5-turbo,allenai--OLMo-2-1124-7B-Instruct,0.5793650793650794,0.5264550264550265
-mbpp_retrieval_as_feedback_gpt-3.5-turbo_no_cheat_no_question,allenai--OLMo-2-1124-7B-Instruct,0.3994708994708995,0.4021164021164021
-mbpp_just_feedback_rag_teacher_gpt-3.5-turbo_no_cheat_no_question,allenai--OLMo-2-1124-7B-Instruct,0.37037037037037035,0.37037037037037035
-mbpp_just_feedback_gpt-3.5-turbo_no_cheat_no_question,allenai--OLMo-2-1124-7B-Instruct,0.3783068783068783,0.3835978835978836
-mbpp_with_feedback_gpt-3.5-turbo_no_cheat_no_question,allenai--OLMo-2-1124-7B-Instruct,0.41798941798941797,0.41005291005291006
-mbpp_with_feedback_gpt-3.5-turbo,allenai--OLMo-2-1124-7B-Instruct,0.5529100529100529,0.5105820105820106
-mbpp_with_rag_teacher_feedback_gpt-3.5-turbo_no_cheat_no_question,allenai--OLMo-2-1124-7B-Instruct,0.42328042328042326,0.42063492063492064

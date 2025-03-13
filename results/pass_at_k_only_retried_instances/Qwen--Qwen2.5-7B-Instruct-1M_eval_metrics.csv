@@ -1,0 +1,5 @@
+exp_id,model,base_helpfulness,base_nonleak_helpfulness,base_leakage_freq,plus_helpfulness,plus_nonleak_helpfulness,plus_leakage_freq
+Teacher Feedback,Qwen--Qwen2.5-7B-Instruct-1M,0.066,0.0,0.844,0.045,0.0,0.749
+Teacher Feedback (No Cheat No Question),Qwen--Qwen2.5-7B-Instruct-1M,0.026,0.0,0.73,0.026,0.0,0.725
+Teacher Feedback with RAG,Qwen--Qwen2.5-7B-Instruct-1M,0.032,0.0,0.725,0.026,0.0,0.709
+RAG Feedback,Qwen--Qwen2.5-7B-Instruct-1M,0.048,0.0,0.725,0.056,0.0,0.72
