@@ -27,3 +27,8 @@ If you have a feedback file, you can run:
 ```
 python main.py --model meta-llama/Llama-3.1-8B-Instruct --num_gpus 1 --debug --feedback_file feedback.csv
 ```
+
+Retrieve from youcom search api using mbpp original prompts.
+```bash
+python retriever/search_for_original_questions.py
+```

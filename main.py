@@ -8,6 +8,7 @@ import torch
 from codegen import run_codegen
 from data.mbpp import get_mbpp_plus
 from evaluate import evaluate
+import json
 
 def set_seed_everywhere(seed):
     torch.manual_seed(seed)
@@ -31,12 +32,15 @@ def main(args):
     if feedback_file:
         print(f"Loading feedback from {feedback_file}")
         feedback_df = pd.read_csv(feedback_file)
+        if args.retrieval_as_feedback:
+            feedback_df["retrieved"] = feedback_df["retrieved"].apply(eval).apply(lambda x: x[:3]).apply(lambda x: json.dumps(x, indent=2))
+            feedback_df["feedback"] = feedback_df["retrieved"]
         feedback_df_task_ids = feedback_df["task_id"].values
         
         for key in mbpp_dataset.keys():
             if key in feedback_df_task_ids:
                 mbpp_dataset[key]["feedback"] = feedback_df.loc[feedback_df["task_id"] == key, "feedback"].values[0]
-                mbpp_dataset[key]["init_soln"] = feedback_df.loc[feedback_df["task_id"] == key, "solution"].values[0]
+                mbpp_dataset[key]["init_soln"] = feedback_df.loc[feedback_df["task_id"] == key, "solution"].values[0] if not args.feedback_only else None
             else:
                 mbpp_dataset[key]["feedback"] = None
                 mbpp_dataset[key]["init_soln"] = None
@@ -89,5 +93,7 @@ if __name__ == "__main__":
     # For debugging
     parser.add_argument("--use_mini", action="store_true", help="Use mini dataset")
     parser.add_argument("--debug", action="store_true", help="Debug mode")
+    parser.add_argument("--feedback_only", action="store_true", help="Condition on just the feedback without the questions or failed guess.")
+    parser.add_argument("--retrieval_as_feedback", action="store_true", help="Use retrieval as feedback")
     args = parser.parse_args()
     main(args)
